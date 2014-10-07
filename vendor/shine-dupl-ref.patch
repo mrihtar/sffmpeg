@@ -1,0 +1,52 @@
+--- shine/src/lib/tables.h.org	2014-10-02 18:15:00.511656455 +0200
++++ shine/src/lib/tables.h	2014-10-02 18:15:10.446519904 +0200
+@@ -3,8 +3,8 @@
+ 
+ #include "types.h"
+ 
+-extern const int slen1_tab[16];
+-extern const int slen2_tab[16];
++extern const int slen1_tub[16];
++extern const int slen2_tub[16];
+ 
+ extern const int samplerates[9];
+ extern const int bitrates[16][4];
+--- shine/src/lib/tables.c.org	2014-10-02 17:03:17.122951450 +0200
++++ shine/src/lib/tables.c	2014-10-02 18:14:36.158948992 +0200
+@@ -7,8 +7,8 @@
+ 
+ #include "tables.h"
+ 
+-const int slen1_tab[16] = { 0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4 };
+-const int slen2_tab[16] = { 0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3 };
++const int slen1_tub[16] = { 0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4 };
++const int slen2_tub[16] = { 0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3 };
+ 
+ /* Valid samplerates and bitrates. */
+ const int samplerates[9] = {
+--- shine/src/lib/l3bitstream.c.org	2014-10-02 18:15:24.624752679 +0200
++++ shine/src/lib/l3bitstream.c	2014-10-02 18:15:39.776068873 +0200
+@@ -58,8 +58,8 @@
+       for ( ch = 0; ch < config->wave.channels; ch++ )
+         {
+           gr_info *gi = &(si.gr[gr].ch[ch].tt);
+-          unsigned slen1 = slen1_tab[ gi->scalefac_compress ];
+-          unsigned slen2 = slen2_tab[ gi->scalefac_compress ];
++          unsigned slen1 = slen1_tub[ gi->scalefac_compress ];
++          unsigned slen2 = slen2_tub[ gi->scalefac_compress ];
+           int *ix = &config->l3_enc[ch][gr][0];
+ 
+           if ( gr == 0 || si.scfsi[ch][0] == 0 )
+--- shine/src/lib/l3loop.c.org	2014-10-02 18:15:52.962945725 +0200
++++ shine/src/lib/l3loop.c	2014-10-02 18:16:09.040735175 +0200
+@@ -287,8 +287,8 @@
+   bits = 0;
+ 
+   {
+-    slen1 = slen1_tab[ gi->scalefac_compress ];
+-    slen2 = slen2_tab[ gi->scalefac_compress ];
++    slen1 = slen1_tub[ gi->scalefac_compress ];
++    slen2 = slen2_tub[ gi->scalefac_compress ];
+ 
+     if ( !gr || !(config->side_info.scfsi[ch][0]) )
+       bits += (6 * slen1);

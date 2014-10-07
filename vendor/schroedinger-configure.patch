@@ -1,0 +1,44 @@
+--- schroedinger/configure.org	2012-01-23 03:06:43.000000000 +0100
++++ schroedinger/configure	2014-10-02 16:23:15.703883806 +0200
+@@ -17235,7 +17235,7 @@
+ pkgconfigdir="\$(libdir)/pkgconfig"
+ 
+ 
+-ac_config_files="$ac_config_files Makefile doc/Makefile schroedinger/Makefile schroedinger/cuda/Makefile schroedinger/opengl/Makefile testsuite/Makefile testsuite/cache/Makefile testsuite/cuda/Makefile testsuite/perf/Makefile testsuite/coder/Makefile testsuite/dirac/Makefile testsuite/installation/Makefile testsuite/manual/Makefile testsuite/opengl/Makefile testsuite/prototype/Makefile testsuite/streams/Makefile testsuite/tables2/Makefile tools/Makefile schroedinger/schroversion.h schroedinger-uninstalled.pc schroedinger.pc schroedinger.spec"
++ac_config_files="$ac_config_files Makefile doc/Makefile schroedinger/Makefile schroedinger/cuda/Makefile schroedinger/opengl/Makefile tools/Makefile schroedinger/schroversion.h schroedinger-uninstalled.pc schroedinger.pc schroedinger.spec"
+ 
+ cat >confcache <<\_ACEOF
+ # This file is a shell script that caches the results of configure
+@@ -18414,18 +18414,6 @@
+     "schroedinger/Makefile") CONFIG_FILES="$CONFIG_FILES schroedinger/Makefile" ;;
+     "schroedinger/cuda/Makefile") CONFIG_FILES="$CONFIG_FILES schroedinger/cuda/Makefile" ;;
+     "schroedinger/opengl/Makefile") CONFIG_FILES="$CONFIG_FILES schroedinger/opengl/Makefile" ;;
+-    "testsuite/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/Makefile" ;;
+-    "testsuite/cache/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/cache/Makefile" ;;
+-    "testsuite/cuda/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/cuda/Makefile" ;;
+-    "testsuite/perf/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/perf/Makefile" ;;
+-    "testsuite/coder/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/coder/Makefile" ;;
+-    "testsuite/dirac/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/dirac/Makefile" ;;
+-    "testsuite/installation/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/installation/Makefile" ;;
+-    "testsuite/manual/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/manual/Makefile" ;;
+-    "testsuite/opengl/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/opengl/Makefile" ;;
+-    "testsuite/prototype/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/prototype/Makefile" ;;
+-    "testsuite/streams/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/streams/Makefile" ;;
+-    "testsuite/tables2/Makefile") CONFIG_FILES="$CONFIG_FILES testsuite/tables2/Makefile" ;;
+     "tools/Makefile") CONFIG_FILES="$CONFIG_FILES tools/Makefile" ;;
+     "schroedinger/schroversion.h") CONFIG_FILES="$CONFIG_FILES schroedinger/schroversion.h" ;;
+     "schroedinger-uninstalled.pc") CONFIG_FILES="$CONFIG_FILES schroedinger-uninstalled.pc" ;;
+--- schroedinger/Makefile.in.org	2012-01-23 03:06:42.000000000 +0100
++++ schroedinger/Makefile.in	2014-10-02 16:27:01.572599710 +0200
+@@ -291,9 +291,9 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ AUTOMAKE_OPTIONS = foreign
+-SUBDIRS = schroedinger doc tools testsuite
++SUBDIRS = schroedinger doc tools
+ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+-DIST_SUBDIRS = schroedinger doc tools testsuite
++DIST_SUBDIRS = schroedinger doc tools
+ EXTRA_DIST = COPYING COPYING.GPL COPYING.LGPL COPYING.MIT COPYING.MPL \
+ 	     autogen.sh schroedinger.spec TODO NEWS orc.mak
+ 

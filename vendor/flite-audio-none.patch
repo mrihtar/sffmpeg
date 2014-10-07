@@ -1,0 +1,15 @@
+--- flite/configure.org	2009-08-14 22:50:59.000000000 +0200
++++ flite/configure	2014-09-30 23:42:38.853794762 +0200
+@@ -4716,9 +4716,9 @@
+ 	 test -z "$ac_c_werror_flag" ||
+ 	 test ! -s conftest.err
+        } && test -s conftest.$ac_objext; then
+-  AUDIODRIVER="alsa"
+-	       AUDIODEFS=-DCST_AUDIO_ALSA
+-               AUDIOLIBS=-lasound
++  AUDIODRIVER="none"
++	       AUDIODEFS=-DCST_AUDIO_NONE
++               AUDIOLIBS=
+ else
+   echo "$as_me: failed program was:" >&5
+ sed 's/^/| /' conftest.$ac_ext >&5

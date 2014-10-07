@@ -1,0 +1,20 @@
+--- gsm/Makefile.org	2014-10-01 00:39:42.459668432 +0200
++++ gsm/Makefile	2014-10-01 00:39:57.376572880 +0200
+@@ -71,7 +71,7 @@
+ # Leave INSTALL_ROOT empty (or just don't execute "make install") to
+ # not install gsm and toast outside of this directory.
+ 
+-INSTALL_ROOT	=
++#INSTALL_ROOT	=
+ 
+ # Where do you want to install the gsm library, header file, and manpages?
+ #
+@@ -80,7 +80,7 @@
+ 
+ GSM_INSTALL_ROOT = $(INSTALL_ROOT)
+ GSM_INSTALL_LIB = $(GSM_INSTALL_ROOT)/lib
+-GSM_INSTALL_INC = $(GSM_INSTALL_ROOT)/inc
++GSM_INSTALL_INC = $(GSM_INSTALL_ROOT)/include
+ GSM_INSTALL_MAN = $(GSM_INSTALL_ROOT)/man/man3
+ 
+ 

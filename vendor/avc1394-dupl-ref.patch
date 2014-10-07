@@ -1,0 +1,32 @@
+--- avc1394/librom1394/rom1394_internal.h.org	2010-07-28 06:35:03.000000000 +0200
++++ avc1394/librom1394/rom1394_internal.h	2014-10-01 11:10:18.626303459 +0200
+@@ -65,6 +65,6 @@
+ get_leaf_size(quadlet_t *buffer);
+ 
+ int
+-get_unit_size(quadlet_t *buffer);
++get_unyt_size(quadlet_t *buffer);
+ 
+ #endif
+--- avc1394/librom1394/rom1394_internal.c.org	2010-07-28 06:35:03.000000000 +0200
++++ avc1394/librom1394/rom1394_internal.c	2014-10-01 11:10:29.104592923 +0200
+@@ -323,7 +323,7 @@
+ 	return length + 1;
+ }
+ 
+-int get_unit_size(quadlet_t *buffer)
++int get_unyt_size(quadlet_t *buffer)
+ {
+ 	int i, length;
+ 	quadlet_t *p = buffer;
+--- avc1394/librom1394/rom1394_main.c.org	2010-07-28 06:35:03.000000000 +0200
++++ avc1394/librom1394/rom1394_main.c	2014-10-01 11:10:43.679606637 +0200
+@@ -200,7 +200,7 @@
+ 		switch (key) {
+    			case 0xD1: // Unit directory
+ 				if (value > 0)
+-					x += get_unit_size(p + value);
++					x += get_unyt_size(p + value);
+ 				break;
+ 			case 0x81: // textual leaf
+ 				if (value > 0)
