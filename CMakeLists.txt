@@ -17,7 +17,15 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   z
   URL http://zlib.net/zlib-1.2.8.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --static
+  CONFIGURE_COMMAND CFLAGS=-fPIC ./configure --prefix=${CMAKE_BINARY_DIR} --static
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  bzip2
+  URL http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+  PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/vendor/bzip2-fpic.patch
+  CONFIGURE_COMMAND ""
+  INSTALL_COMMAND make install PREFIX=${CMAKE_BINARY_DIR}
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -144,7 +152,7 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   freetype
   URL http://download.savannah.gnu.org/releases/freetype/freetype-2.5.3.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
+  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   INSTALL_COMMAND make install COMMAND ln -fs ${CMAKE_BINARY_DIR}/include/freetype2 ${CMAKE_BINARY_DIR}/include/freetype2/freetype
   BUILD_IN_SOURCE 1
 )
@@ -157,14 +165,14 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   expat
   URL http://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz
-  CONFIGURE_COMMAND PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
+  CONFIGURE_COMMAND PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   fontconfig
   DEPENDS freetype expat
   URL http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.11.1.tar.bz2
-  CONFIGURE_COMMAND PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
+  CONFIGURE_COMMAND PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -178,7 +186,7 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   gavl
   URL http://downloads.sourceforge.net/project/gmerlin/gavl/1.4.0/gavl-1.4.0.tar.gz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -186,7 +194,7 @@ EXTERNALPROJECT_ADD(
   cairo
 # URL http://cairographics.org/releases/cairo-1.12.14.tar.xz
   URL http://helium.ijs.si/cairo-1.12.14.tar.bz2
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -224,10 +232,10 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   bs2b
-  DEPENDS sndfile
+  DEPENDS vorbis sndfile
   URL http://downloads.sourceforge.net/project/bs2b/libbs2b/3.1.0/libbs2b-3.1.0.tar.gz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared LIBS=-lvorbis\ -lvorbisenc\ -logg\ -lFLAC\ -lm
-  BUILD_COMMAND PATH=$ENV{PATH} make
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared LDFLAGS=-L${CMAKE_BINARY_DIR}/lib LIBS=-lvorbis\ -lvorbisenc\ -logg\ -lFLAC\ -lm
+  BUILD_COMMAND PATH=$ENV{PATH} make CFLAGS=-I${CMAKE_BINARY_DIR}/include
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -249,7 +257,7 @@ EXTERNALPROJECT_ADD(
   cdio-paranoia
   DEPENDS cdio
   URL http://ftp.gnu.org/gnu/libcdio/libcdio-paranoia-10.2+0.90+1.tar.gz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared CFLAGS=-I${CMAKE_BINARY_DIR}/include
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -360,6 +368,7 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   soxr
+# URL http://downloads.sourceforge.net/project/soxr/soxr-0.1.1-Source.tar.xz
   URL http://helium.ijs.si/soxr-0.1.1-Source.tar.bz2
   CONFIGURE_COMMAND mkdir -p Release COMMAND cd Release && cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF ..
   BUILD_COMMAND cd Release && make
@@ -392,47 +401,55 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   vo-amrwbenc
   URL http://downloads.sourceforge.net/project/opencore-amr/vo-amrwbenc/vo-amrwbenc-0.1.3.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  CONFIGURE_COMMAND PATH=$ENV{PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   wavpack
   URL http://www.wavpack.com/wavpack-4.70.0.tar.bz2
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --enable-mmx
+  CONFIGURE_COMMAND PATH=$ENV{PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --enable-mmx
+  BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   webp
   GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
   UPDATE_COMMAND ""
-  CONFIGURE_COMMAND autoreconf -i COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  CONFIGURE_COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   xavs
+  DEPENDS yasm
   SVN_REPOSITORY https://svn.code.sf.net/p/xavs/code/trunk
   UPDATE_COMMAND ""
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR}
+  CONFIGURE_COMMAND PATH=$ENV{PATH} ./configure --prefix=${CMAKE_BINARY_DIR}
+  BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   zmq
   URL http://download.zeromq.org/zeromq-4.0.4.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static LIBS=-lstdc++
+  CONFIGURE_COMMAND PATH=$ENV{PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static LIBS=-lstdc++
+  BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   zvbi
   URL http://downloads.sourceforge.net/project/zapping/zvbi/0.2.35/zvbi-0.2.35.tar.bz2
-  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  CONFIGURE_COMMAND PATH=$ENV{PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
   ffmpeg
-  DEPENDS yasm opencore faac aacplus fdkaac mp3lame ogg speex vorbis theora opus xvidcore x264 x265 vpx rtmp freetype ass frei0r bluray bs2b caca cdio-paranoia dc1394 flite gsm iec61883 ilbc modplug nut openjpeg schroedinger shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xavs zmq zvbi
-  URL http://www.ffmpeg.org/releases/ffmpeg-2.4.1.tar.bz2
+  DEPENDS bzip2 yasm opencore faac aacplus fdkaac mp3lame ogg speex vorbis theora opus xvidcore x264 x265 vpx rtmp freetype ass frei0r bluray bs2b caca cdio-paranoia dc1394 flite gsm iec61883 ilbc modplug nut openjpeg schroedinger shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xavs zmq zvbi
+  URL http://www.ffmpeg.org/releases/ffmpeg-2.4.2.tar.bz2
   PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/vendor/ffmpeg-ism-offset.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/etc/ffmpeg --disable-shared --enable-static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --disable-ffserver --enable-runtime-cpudetect --enable-memalign-hack --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -ldl\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lorc-0.4\ -lv4lconvert\ -ljpeg\ -lncurses\ -ltinfo\ -lgomp\ -lrt\ -lz\ -lm --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfaac --enable-libfdk-aac --enable-libaacplus --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libnut --enable-libopenjpeg --enable-libschroedinger --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/usr/share/ffmpeg --disable-shared --enable-static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --disable-ffserver --enable-runtime-cpudetect --enable-memalign-hack --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -ldl\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lorc-0.4\ -lv4lconvert\ -ljpeg\ -lncurses\ -ltinfo\ -lbluray\ -lgomp\ -lrt\ -lz\ -lm --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfaac --enable-libfdk-aac --enable-libaacplus --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libnut --enable-libopenjpeg --enable-libschroedinger --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi
   BUILD_COMMAND PATH=$ENV{PATH} make
+  INSTALL_COMMAND PATH=$ENV{PATH} make install COMMAND PATH=$ENV{PATH} make install-data DATADIR=/usr/share/ffmpeg
   BUILD_IN_SOURCE 1
 )

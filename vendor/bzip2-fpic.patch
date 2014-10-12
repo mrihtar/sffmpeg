@@ -1,0 +1,11 @@
+--- bzip2/Makefile.org	2014-10-10 19:29:32.416441476 +0200
++++ bzip2/Makefile	2014-10-10 19:29:38.828114288 +0200
+@@ -21,7 +21,7 @@
+ LDFLAGS=
+ 
+ BIGFILES=-D_FILE_OFFSET_BITS=64
+-CFLAGS=-Wall -Winline -O2 -g $(BIGFILES)
++CFLAGS=-Wall -Winline -O2 -g $(BIGFILES) -fPIC
+ 
+ # Where you want it installed when you do 'make install'
+ PREFIX=/usr/local
