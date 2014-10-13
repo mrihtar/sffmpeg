@@ -1,0 +1,10 @@
+--- flac/configure.ac.org	2014-10-13 14:54:11.516863950 +0200
++++ flac/configure.ac	2014-10-13 14:54:20.572864004 +0200
+@@ -395,7 +395,6 @@
+ 
+ XIPH_ADD_CFLAGS([-Wextra])
+ XIPH_ADD_CFLAGS([-Wdeclaration-after-statement])
+-XIPH_ADD_CFLAGS([-D_FORTIFY_SOURCE=2])
+ 
+ if test x$enable_stack_smash_protection = "xyes" ; then
+ 	XIPH_GCC_STACK_PROTECTOR

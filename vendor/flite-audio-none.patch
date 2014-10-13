@@ -1,5 +1,16 @@
 --- flite/configure.org	2009-08-14 22:50:59.000000000 +0200
-+++ flite/configure	2014-09-30 23:42:38.853794762 +0200
++++ flite/configure	2014-10-12 11:54:38.930214426 +0200
+@@ -4411,8 +4411,8 @@
+ 
+ fi
+ if test $ac_cv_header_sys_soundcard_h = yes; then
+-  AUDIODRIVER="oss"
+-               AUDIODEFS=-DCST_AUDIO_LINUX
++  AUDIODRIVER="none"
++               AUDIODEFS=-DCST_AUDIO_NONE
+ fi
+ 
+ 
 @@ -4716,9 +4716,9 @@
  	 test -z "$ac_c_werror_flag" ||
  	 test ! -s conftest.err

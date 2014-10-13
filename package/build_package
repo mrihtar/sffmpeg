@@ -1,0 +1,131 @@
+#!/bin/bash
+HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
+#
+os() {
+  case `uname` in
+    Linux )
+      # CentOS, RHEL, Ubuntu, Debian, openSUSE, SLES, SciL, Amazon
+      awk '{
+  if (length($0) == 0) next;
+  sub("Welcome to",""); # Appears in openSUSE and SLES
+  if (match($0, "Red Hat Enterprise Linux")) { print "RHEL"; }
+  else if (match($0, "SUSE Linux Enterprise Server")) { print "SLES"; }
+  else if (match($0, "Scientific Linux")) { print "SciL"; }
+  else { print $1; }
+  exit 0
+}' /etc/issue
+      [ $? -ne 0 ] && return 1
+      ;;
+    Darwin )
+      echo MacOS
+      ;;
+    * )
+      uname
+      ;;
+  esac
+  return 0
+}
+#
+os_ver() {
+  case `uname` in
+    Linux )
+      # CentOS, RHEL, Ubuntu, Debian, openSUSE, SLES, SciL, Amazon
+      lsb_release -sd | awk '{
+  if (length($0) == 0) next;
+  sub("^[^0-9.]*", "");
+  sub("\\(.*$", "");
+  sub("[^0-9.]*$", "");
+  print $0;
+  exit 0
+}'
+      [ ${PIPESTATUS[0]} -ne 0 -o ${PIPESTATUS[1]} -ne 0 ] && return 1
+      ;;
+    Darwin )
+      sw_vers | awk '/^ProductVersion:/ {
+  sub("^[^0-9.]*", ""); sub("[^0-9.]*$", "");
+  print $0;
+  exit 0
+}'
+      [ ${PIPESTATUS[0]} -ne 0 -o ${PIPESTATUS[1]} -ne 0 ] && return 1
+      ;;
+    * )
+      return 1
+      ;;
+  esac
+  return 0
+}
+#
+arch() {
+  case `uname -m` in
+    i386 | i486 | i586 | i686 )
+      echo i386
+      ;;
+    x86_64 | x64 )
+      echo x86_64
+      ;;
+    * )
+      uname -m
+      ;;
+  esac
+  return 0
+}
+#
+# Main
+#
+ver=2.4.2
+#
+rm -fr bin lib share
+[ $? -ne 0 ] && exit 1
+mkdir -p bin lib/frei0r-1 share/man/man1 share/ffmpeg/examples share/doc/ffmpeg-$ver
+[ $? -ne 0 ] && exit 1
+#
+cp -p ../build/bin/ffmpeg bin/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/bin/ffprobe bin/
+[ $? -ne 0 ] && exit 1
+#
+cp -p ../build/lib/frei0r-1/*.so lib/frei0r-1/
+[ $? -ne 0 ] && exit 1
+#
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/doc/ffmpeg.1* share/man/man1/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/doc/ffprobe.1* share/man/man1/
+[ $? -ne 0 ] && exit 1
+#
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/doc/ffprobe.xsd share/ffmpeg/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/presets/*.ffpreset share/ffmpeg/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c share/ffmpeg/examples/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile share/ffmpeg/examples/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/doc/examples/README share/ffmpeg/examples/
+[ $? -ne 0 ] && exit 1
+#
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/Changelog share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/COPYING* share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/CREDITS share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/INSTALL* share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/LICENSE* share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/README* share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+cp -p ../build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES share/doc/ffmpeg-$ver/
+[ $? -ne 0 ] && exit 1
+#
+PACKAGE=ffmpeg-$ver-`os`-`os_ver`-`arch`.tar
+tar -cvf $PACKAGE bin lib share
+[ $? -ne 0 ] && exit 1
+echo "Compressing package..."
+bzip2 -9f $PACKAGE
+[ $? -ne 0 ] && exit 1
+echo "Packaging done: ${HD##*/}/$PACKAGE.bz2"
+#
+exit 0

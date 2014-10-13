@@ -1,17 +1,16 @@
---- a/libavformat/movenc.h
-+++ b/libavformat/movenc.h
-@@ -167,6 +167,7 @@
+--- ffmpeg/libavformat/movenc.h.org	2014-10-02 23:45:56.107121954 +0200
++++ ffmpeg/libavformat/movenc.h	2014-10-02 23:43:24.801838580 +0200
+@@ -169,6 +169,7 @@
      int max_fragment_size;
      int ism_lookahead;
      AVIOContext *mdat_buf;
 +    int64_t ism_offset;
-
+ 
      int use_editlist;
      int video_track_timescale;
-
---- a/libavformat/movenc.c
-+++ b/libavformat/movenc.c
-@@ -66,6 +66,7 @@
+--- ffmpeg/libavformat/movenc.c.org	2014-09-21 23:43:15.000000000 +0200
++++ ffmpeg/libavformat/movenc.c	2014-10-02 23:43:24.803837577 +0200
+@@ -71,6 +71,7 @@
      { "frag_size", "Maximum fragment size", offsetof(MOVMuxContext, max_fragment_size), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
      { "ism_lookahead", "Number of lookahead entries for ISM files", offsetof(MOVMuxContext, ism_lookahead), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
      { "use_editlist", "use edit list", offsetof(MOVMuxContext, use_editlist), AV_OPT_TYPE_INT, {.i64 = -1}, -1, 1, AV_OPT_FLAG_ENCODING_PARAM},
@@ -19,7 +18,7 @@
      { "video_track_timescale", "set timescale of all video tracks", offsetof(MOVMuxContext, video_track_timescale), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
      { "brand",    "Override major brand", offsetof(MOVMuxContext, major_brand),   AV_OPT_TYPE_STRING, {.str = NULL}, .flags = AV_OPT_FLAG_ENCODING_PARAM },
      { NULL },
-@@ -3893,6 +3894,7 @@
+@@ -4149,6 +4150,7 @@
           * this is updated. */
          track->hint_track = -1;
          track->start_dts  = AV_NOPTS_VALUE;

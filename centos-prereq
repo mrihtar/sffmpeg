@@ -1,16 +1,15 @@
 #!/bin/bash
 HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
 #
-yum -y install git mercurial
-[ $? -ne 0 ] && exit 1
-yum -y install autoconf libtool pkgconfig
+[ -f .prereq_done ] && exit 0
+yum -y install cmake git mercurial
 [ $? -ne 0 ] && exit 1
 #yum -y install cmake
 #[ $? -ne 0 ] && exit 1
 # Official cmake is too old, compile from sources!
-# After running bootstrap enable CMAKE_USE_OPENSSL
-# and ENABLE_OPENSSL:INTERNAL in CMakeCache.txt
-# and do gmake install
+# (see cmake/build_cmake)
+yum -y install autoconf libtool pkgconfig
+[ $? -ne 0 ] && exit 1
 yum -y install docbook-utils-pdf texi2html texinfo
 [ $? -ne 0 ] && exit 1
 yum -y install glibc-static glib2-static
@@ -23,7 +22,7 @@ yum -y install lua-devel lua-static
 [ $? -ne 0 ] && exit 1
 yum -y install libusb1-devel libusb1-static
 [ $? -ne 0 ] && exit 1
-yum -y install ncurses-static
+yum -y install ncurses-static gpm-static
 [ $? -ne 0 ] && exit 1
 if [ ! -s /usr/include/linux/media.h ]; then
   cp "$HD/media.h" /usr/include/linux

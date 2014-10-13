@@ -1,0 +1,38 @@
+#!/bin/bash
+arch() {
+  case `uname -m` in
+    i386 | i486 | i586 | i686 )
+      echo i386
+      ;;
+    x86_64 | x64 )
+      echo x86_64
+      ;;
+    * )
+      uname -m
+      ;;
+  esac
+  return 0
+}
+#
+# Main
+#
+apt-get -y source udev
+[ $? -ne 0 ] && exit 1
+apt-get -y build-dep udev
+[ $? -ne 0 ] && exit 1
+dpkg-source -x `basename udev*.dsc`
+[ $? -ne 0 ] && exit 1
+DIR=`find . -type d -name 'udev*' -prune`
+DIR=`basename "$DIR"`
+cd $DIR
+[ $? -ne 0 ] && exit 1
+autoreconf -i
+[ $? -ne 0 ] && exit 1
+./configure --enable-static 2>&1 | tee configure.log
+[ $? -ne 0 ] && exit 1
+make libudev/libudev.la 2>&1 | tee make.log
+[ $? -ne 0 ] && exit 1
+echo cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu/ 
+cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu/ 
+[ $? -ne 0 ] && exit 1
+exit 0

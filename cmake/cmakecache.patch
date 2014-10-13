@@ -1,0 +1,20 @@
+--- CMakeCache.txt.org	2014-10-12 15:56:34.340314523 +0200
++++ CMakeCache.txt	2014-10-12 15:57:54.256891119 +0200
+@@ -215,7 +215,7 @@
+ CMAKE_USE_KWSTYLE:BOOL=OFF
+ 
+ //Use OpenSSL code with curl.
+-CMAKE_USE_OPENSSL:BOOL=OFF
++CMAKE_USE_OPENSSL:BOOL=ON
+ 
+ //If true, cmake will use relative paths in makefiles and projects.
+ CMAKE_USE_RELATIVE_PATHS:BOOL=OFF
+@@ -1013,7 +1013,7 @@
+ //Enable use of Nettle
+ ENABLE_NETTLE:INTERNAL=OFF
+ //Enable use of OpenSSL
+-ENABLE_OPENSSL:INTERNAL=OFF
++ENABLE_OPENSSL:INTERNAL=ON
+ //Enable extended attribute support
+ ENABLE_XATTR:INTERNAL=OFF
+ //No configurable exe dir.
