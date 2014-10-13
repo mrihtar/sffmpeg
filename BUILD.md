@@ -15,7 +15,7 @@
 package/ffmpeg-&lt;ver&gt;-&lt;os&gt;-&lt;os_ver&gt;-&lt;arch&gt;.tar.bz2
 </pre>
 
-Built files:<br>
+<b>Built files:</b><br>
 <pre>
 build/bin/ffmpeg                                     --> /usr/bin/ffmpeg
 build/bin/ffprobe                                    --> /usr/bin/ffprobe
