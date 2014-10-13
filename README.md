@@ -1,15 +1,15 @@
-This repository is an extended clone of https://github.com/pyke369/sffmpeg
+This repository is an extended clone of https://github.com/pyke369/sffmpeg<br>
 It build a static version of ffmpeg executable with a lot of external libraries included.
 
 Static ffmpeg built from this repository currently compiles on:
-- CentOS 6.5		i686 and x86_64
-- Ubuntu 14.04 LTS	i386 and x86_64
-- Debian 7.6		i386 and x86_64
+- | CentOS 6.5		| i686 and x86_64 |
+- | Ubuntu 14.04 LTS	| i386 and x86_64 |
+- | Debian 7.6		| i386 and x86_64 |
 
 For build see BUILD.md.
 
 Currently included features in this build of ffmpeg are:
-
+<blockquote>
 C compiler                gcc
 runtime cpu detection     yes
 MMX enabled               yes
@@ -475,3 +475,4 @@ iec61883		libdc1394
 Enabled outdevs:
 caca			oss			v4l2
 fbdev
+</blockquote>
