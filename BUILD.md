@@ -1,21 +1,21 @@
-<b>Tested on:</b><br>
+**Tested on:**
 <table>
-<tr><td><b>CentOS 6.5</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>CentOS 6.5</b>      </td><td>i386 and x86_64</td></tr>
 <tr><td><b>Ubuntu 14.04 LTS</b></td><td>i386 and x86_64</td></tr>
-<tr><td><b>Debian 7.6</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>Debian 7.6</b>      </td><td>i386 and x86_64</td></tr>
 </table>
 
-<b>Build with:</b><br>
+**Build with:**
 <pre>
 # ./build_all
 </pre>
 
-<b>Result:</b><br>
+**Result:**
 <pre>
 package/ffmpeg-&lt;ver&gt;-&lt;os&gt;-&lt;os_ver&gt;-&lt;arch&gt;.tar.bz2
 </pre>
 
-<b>Built files:</b><br>
+**Built files:**
 <pre>
 build/bin/ffmpeg                                     --> /usr/bin/ffmpeg
 build/bin/ffprobe                                    --> /usr/bin/ffprobe

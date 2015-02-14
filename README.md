@@ -1,18 +1,22 @@
-This repository is an extended clone of https://github.com/pyke369/sffmpeg<br>
-It builds a static version of ffmpeg executable with a lot of external libraries included.
+This repository is an extended clone of https://github.com/pyke369/sffmpeg  
+It builds a static version of ffmpeg executable with a lot more external
+libraries included.
 
-Static ffmpeg build from this repository currently compiles on:
+Static **ffmpeg v2.5.4** build from this repository currently compiles on:
 <table>
-<tr><td><b>CentOS 6.5</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>CentOS 6.5</b>      </td><td>i386 and x86_64</td>
+<td rowspan="3">
+<img src="http://www.movieconverter-studio.com/_PUBLIC/ffmpeg/logo-new/ffmpeg-logo-src/ffmpeg-logo.png" height="90">
+</td></tr>
 <tr><td><b>Ubuntu 14.04 LTS</b></td><td>i386 and x86_64</td></tr>
-<tr><td><b>Debian 7.6</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>Debian 7.6</b>      </td><td>i386 and x86_64</td></tr>
 </table>
 
-For build see BUILD.md.
+For build see [BUILD.md].
 
 Included features in this build of ffmpeg are:
 <pre>
-ffmpeg version            2.4.2
+ffmpeg version            2.5.4
 C compiler                gcc
 runtime cpu detection     yes
 MMX enabled               yes
@@ -479,3 +483,5 @@ Enabled outdevs:
 caca                    oss                     v4l2
 fbdev
 </pre>
+
+[BUILD.md]: https://github.com/mrihtar/sffmpeg/blob/master/BUILD.md
