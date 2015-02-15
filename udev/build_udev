@@ -1,4 +1,58 @@
 #!/bin/bash
+os() {
+  case `uname` in
+    Linux )
+      # CentOS, RHEL, Ubuntu, Debian, openSUSE, SLES, SciL, Amazon
+      awk '{
+  if (length($0) == 0) next;
+  sub("Welcome to",""); # Appears in openSUSE and SLES
+  if (match($0, "Red Hat Enterprise Linux")) { print "RHEL"; }
+  else if (match($0, "SUSE Linux Enterprise Server")) { print "SLES"; }
+  else if (match($0, "Scientific Linux")) { print "SciL"; }
+  else { print $1; }
+  exit 0
+}' /etc/issue
+      [ $? -ne 0 ] && return 1
+      ;;
+    Darwin )
+      echo MacOS
+      ;;
+    * )
+      uname
+      ;;
+  esac
+  return 0
+}
+#
+os_ver() {
+  case `uname` in
+    Linux )
+      # CentOS, RHEL, Ubuntu, Debian, openSUSE, SLES, SciL, Amazon
+      lsb_release -sd | awk '{
+  if (length($0) == 0) next;
+  sub("^[^0-9.]*", "");
+  sub("\\(.*$", "");
+  sub("[^0-9.]*$", "");
+  print $0;
+  exit 0
+}'
+      [ ${PIPESTATUS[0]} -ne 0 -o ${PIPESTATUS[1]} -ne 0 ] && return 1
+      ;;
+    Darwin )
+      sw_vers | awk '/^ProductVersion:/ {
+  sub("^[^0-9.]*", ""); sub("[^0-9.]*$", "");
+  print $0;
+  exit 0
+}'
+      [ ${PIPESTATUS[0]} -ne 0 -o ${PIPESTATUS[1]} -ne 0 ] && return 1
+      ;;
+    * )
+      return 1
+      ;;
+  esac
+  return 0
+}
+#
 arch() {
   case `uname -m` in
     i386 | i486 | i586 | i686 )
@@ -16,23 +70,56 @@ arch() {
 #
 # Main
 #
-apt-get -y source udev
-[ $? -ne 0 ] && exit 1
-apt-get -y build-dep udev
-[ $? -ne 0 ] && exit 1
-dpkg-source -x `basename udev*.dsc`
-[ $? -ne 0 ] && exit 1
-DIR=`find . -type d -name 'udev*' -prune`
-DIR=`basename "$DIR"`
+case `os` in
+  Ubuntu )
+    apt-get -y source libudev1
+    [ $? -ne 0 ] && exit 1
+    apt-get -y build-dep libudev1
+    [ $? -ne 0 ] && exit 1
+    DIR=`find . -type d -name 'systemd*' -prune`
+    DIR=`basename "$DIR"`
+    ;;
+  Debian )
+    apt-get -y source udev
+    [ $? -ne 0 ] && exit 1
+    apt-get -y build-dep udev
+    [ $? -ne 0 ] && exit 1
+    dpkg-source -x `basename udev*.dsc`
+    [ $? -ne 0 ] && exit 1
+    DIR=`find . -type d -name 'udev*' -prune`
+    DIR=`basename "$DIR"`
+    ;;
+  * )
+    echo "Unsupported operating system: `os`" 1>&2
+    exit 1
+    ;;
+esac
+#
 cd $DIR
 [ $? -ne 0 ] && exit 1
 autoreconf -i
 [ $? -ne 0 ] && exit 1
 ./configure --enable-static 2>&1 | tee configure.log
 [ $? -ne 0 ] && exit 1
-make libudev/libudev.la 2>&1 | tee make.log
-[ $? -ne 0 ] && exit 1
-echo cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu/ 
-cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu/ 
-[ $? -ne 0 ] && exit 1
+case `os` in
+  Ubuntu )
+    make libudev.la 2>&1 | tee make.log
+    [ $? -ne 0 ] && exit 1
+    echo cp .libs/libudev.a /usr/lib/`arch`-linux-gnu
+    cp .libs/libudev.a /usr/lib/`arch`-linux-gnu
+    [ $? -ne 0 ] && exit 1
+    ;;
+  Debian )
+    make libudev/libudev.la 2>&1 | tee make.log
+    [ $? -ne 0 ] && exit 1
+    echo cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu
+    cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu
+    [ $? -ne 0 ] && exit 1
+    ;;
+  * )
+    echo "Unsupported operating system: `os`" 1>&2
+    exit 1
+    ;;
+esac
+#
 exit 0

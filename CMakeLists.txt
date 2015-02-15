@@ -209,7 +209,7 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   frei0r
   DEPENDS gavl cairo
-  URL https://files.dyne.org/.xsend.php?file=frei0r/releases/frei0r-plugins-1.4.tar.gz
+  URL https://files.dyne.org/frei0r/releases/frei0r-plugins-1.4.tar.gz
   CONFIGURE_COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -250,7 +250,7 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   caca
-  GIT_REPOSITORY git://git.zoy.org/libcaca.git
+  GIT_REPOSITORY https://github.com/cacalabs/libcaca
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND ./bootstrap COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --disable-java --disable-x11 --disable-doc
   BUILD_COMMAND PATH=$ENV{PATH} make
