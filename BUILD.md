@@ -1,8 +1,8 @@
 **Tested on:**
 <table>
-<tr><td><b>CentOS 6.5</b>      </td><td>i386 and x86_64</td></tr>
-<tr><td><b>Ubuntu 14.04 LTS</b></td><td>i386 and x86_64</td></tr>
-<tr><td><b>Debian 7.6</b>      </td><td>i386 and x86_64</td></tr>
+<tr><td><b>CentOS 6.6</b>        </td><td>i386 and x86_64</td></tr>
+<tr><td><b>Ubuntu 14.04.1 LTS</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>Debian 7.8</b>        </td><td>i386 and x86_64</td></tr>
 </table>
 
 **Build with:**
@@ -31,12 +31,12 @@ build/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c      --> /usr/share/ffmpeg/examp
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile --> /usr/share/ffmpeg/examples/
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/README   --> /usr/share/ffmpeg/examples/
 
-build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-2.4.2/
-build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-2.4.2/
+build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-2.5.4/
 </pre>
