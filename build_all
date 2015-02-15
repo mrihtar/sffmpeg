@@ -77,6 +77,10 @@ case `os` in
     touch .prereq_done
     ;;
   Ubuntu )
+    case `arch` in
+      i386 )   export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-i386 ;;
+      x86_64 ) export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64 ;;
+    esac
     ./ubuntu-prereq
     [ $? -ne 0 ] && exit 1
     if [ ! -f .prereq_done ]; then
