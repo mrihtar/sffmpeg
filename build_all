@@ -90,9 +90,9 @@ case `os` in
         14.* )
           if [ ! -s /lib/`arch`-linux-gnu/libudev.a ]; then
             # Build static libudev
-            cd systemd
+            cd udev
             [ $? -ne 0 ] && exit 1
-            ./build_systemd
+            ./build_udev
             [ $? -ne 0 ] && exit 1
             cd ..
             [ $? -ne 0 ] && exit 1
