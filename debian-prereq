@@ -1,6 +1,21 @@
 #!/bin/bash
 HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
 #
+arch1() {
+  case `uname -m` in
+    i386 | i486 | i586 | i686 )
+      echo i386
+      ;;
+    x86_64 | x64 )
+      echo amd64
+      ;;
+    * )
+      uname -m
+      ;;
+  esac
+  return 0
+}
+#
 [ -f .prereq_done ] && exit 0
 apt-get update
 [ $? -ne 0 ] && exit 1
@@ -28,8 +43,11 @@ apt-get -y install libusb-1.0-0-dev libncurses5-dev libgpm-dev
 [ $? -ne 0 ] && exit 1
 apt-get -y install openjdk-7-jdk ant
 [ $? -ne 0 ] && exit 1
+update-alternatives --set java /usr/lib/jvm/java-7-openjdk-`arch1`/jre/bin/java
+[ $? -ne 0 ] && exit 1
 if [ ! -s /usr/include/linux/media.h ]; then
   cp "$HD/media.h" /usr/include/linux
   [ $? -ne 0 ] && exit 1
 fi
+#
 exit 0
