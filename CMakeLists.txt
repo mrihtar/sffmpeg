@@ -469,7 +469,7 @@ EXTERNALPROJECT_ADD(
   DEPENDS ffmpeg
   URL ${CMAKE_SOURCE_DIR}/vendor/frmxtract-2.5.4.tar.gz
   PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/vendor/frmxtract-configure.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} CFLAGS=-Wall\ -O2\ -I${CMAKE_BINARY_DIR}/include LDFLAGS=-static\ -L${CMAKE_BINARY_DIR}/lib\ -lavformat\ -lavcodec\ -lavutil\ -lswresample\ -lswscale\ -lvorbis\ -logg\ -lvorbisenc\ -ltheora\ -lvpx\ -lrtmp\ -lzvbi\ -lfaac\ -lfdk-aac\ -laacplus\ -lsndfile\ -lmp3lame\ -lmodplug\ -lsoxr\ -ltwolame\ -lwavpack\ -lxvidcore\ -lx264\ -lx265\ -lxavs\ -lwebp\ -lbluray\ -lopencore-amrwb\ -lopencore-amrnb\ -lvo-amrwbenc\ -lfontconfig\ -lfreetype\ -lschroedinger-1.0\ -lshine\ -lspeex\ -lopus\ -lnut\ -lorc-0.4\ -lstdc++\ -lexpat\ -lilbc\ -lssl\ -lcrypto\ -lxml2\ -lopenjpeg\ -lpng\ -lbz2\ -llzma\ -lgomp\ -lpthread\ -lz\ -lm\ -ldl\ -s
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} CFLAGS=-Wall\ -O2\ -I${CMAKE_BINARY_DIR}/include LDFLAGS=-static\ -L${CMAKE_BINARY_DIR}/lib\ -lavformat\ -lavcodec\ -lavutil\ -lswresample\ -lswscale\ -lvorbis\ -logg\ -lvorbisenc\ -ltheora\ -lvpx\ -lrtmp\ -lzvbi\ -lfaac\ -lfdk-aac\ -laacplus\ -lsndfile\ -lmp3lame\ -lmodplug\ -lsoxr\ -ltwolame\ -lwavpack\ -lxvidcore\ -lx264\ -lx265\ -lxavs\ -lwebp\ -lbluray\ -lopencore-amrwb\ -lopencore-amrnb\ -lvo-amrwbenc\ -lfontconfig\ -lfreetype\ -lschroedinger-1.0\ -lshine\ -lspeex\ -lopus\ -lnut\ -lorc-0.4\ -lstdc++\ -lexpat\ -lilbc\ -lssl\ -lcrypto\ -lxml2\ -lopenjpeg\ -lpng\ -lbz2\ -llzma\ -lgomp\ -lpthread\ -lrt\ -lz\ -lm\ -ldl\ -s
   BUILD_COMMAND PATH=$ENV{PATH} LDFLAGS=$ENV{} make
   BUILD_IN_SOURCE 1
 )
