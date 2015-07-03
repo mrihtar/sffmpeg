@@ -1,0 +1,56 @@
+--- frmxtract/configure.org	2015-03-04 18:54:15.000000000 +0100
++++ frmxtract/configure	2015-07-03 11:23:24.102226511 +0200
+@@ -7,10 +7,20 @@
+ AC_PREFIX=/usr/local
+ AC_BINDIR=bin
+ 
+-for ARGUMENT in $@
++if [ ! -z "${CC}" ]; then
++    AC_CC="${CC}"
++fi
++if [ ! -z "${CFLAGS}" ]; then
++    AC_CFLAGS="${CFLAGS}"
++fi
++if [ ! -z "${LDFLAGS}" ]; then
++    AC_LDFLAGS="${LDFLAGS}"
++fi
++
++for ARGUMENT in "$@"
+ do
+     KEY=`echo ${ARGUMENT}|cut -f1 -d=`
+-    VALUE=`echo ${ARGUMENT}|cut -f2 -d=`
++    VALUE=`echo ${ARGUMENT}|cut -f2- -d=`
+     if [ x"${KEY}" = x"-h" -o x"${KEY}" = x"--help" ]; then
+        cat <<EOF
+ Usage: ./configure [options]
+@@ -33,22 +43,18 @@
+ EOF
+         exit 1
+     elif [ x"${KEY}" = x"--prefix" ]; then
+-        AC_PREFIX=${VALUE}
++        AC_PREFIX="${VALUE}"
+     elif [ x"${KEY}" = x"--bindir" ]; then
+-        AC_BINDIR=${VALUE}
++        AC_BINDIR="${VALUE}"
++    elif [ x"${KEY}" = x"CC" ]; then
++        AC_CC="${VALUE}"
++    elif [ x"${KEY}" = x"CFLAGS" ]; then
++        AC_CFLAGS="${VALUE}"
++    elif [ x"${KEY}" = x"LDFLAGS" ]; then
++        AC_LDFLAGS="${VALUE}"
+     fi
+ done
+ 
+-if [ ! -z ${CC} ]; then
+-    AC_CC=${CC}
+-fi
+-if [ ! -z ${CFLAGS} ]; then
+-    AC_CFLAGS=${CFLAGS}
+-fi
+-if [ ! -z ${LDFLAGS} ]; then
+-    AC_LDFLAGS=${LDFLAGS}
+-fi
+-
+ cat <<EOF >Makefile
+ TARGET=${AC_TARGET}
+ CC=${AC_CC}

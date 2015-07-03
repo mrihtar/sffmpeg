@@ -83,6 +83,8 @@ cp -p ../build/bin/ffmpeg bin/
 [ $? -ne 0 ] && exit 1
 cp -p ../build/bin/ffprobe bin/
 [ $? -ne 0 ] && exit 1
+cp -p ../build/bin/frmxtract bin/
+[ $? -ne 0 ] && exit 1
 #
 cp -p ../build/lib/frei0r-1/*.so lib/frei0r-1/
 [ $? -ne 0 ] && exit 1
