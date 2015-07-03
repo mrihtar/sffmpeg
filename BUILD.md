@@ -1,7 +1,7 @@
 **Tested on:**
 <table>
 <tr><td><b>CentOS 6.6</b>        </td><td>i386 and x86_64</td></tr>
-<tr><td><b>Ubuntu 14.04.1 LTS</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>Ubuntu 14.04.2 LTS</b></td><td>i386 and x86_64</td></tr>
 <tr><td><b>Debian 7.8</b>        </td><td>i386 and x86_64</td></tr>
 </table>
 
@@ -19,6 +19,7 @@ package/ffmpeg-&lt;ver&gt;-&lt;os&gt;-&lt;os_ver&gt;-&lt;arch&gt;.tar.bz2
 <pre>
 build/bin/ffmpeg                                     --> /usr/bin/ffmpeg
 build/bin/ffprobe                                    --> /usr/bin/ffprobe
+build/bin/frmxtract                                  --> /usr/bin/frmxtract
 
 build/lib/frei0r-1/*.so                              --> /usr/lib/frei0r-1/
 
