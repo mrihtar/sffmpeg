@@ -31,12 +31,12 @@ build/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c      --> /usr/share/ffmpeg/examp
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile --> /usr/share/ffmpeg/examples/
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/README   --> /usr/share/ffmpeg/examples/
 
-build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-2.5.4/
-build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-2.5.4/
+build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-2.7.1/
 </pre>

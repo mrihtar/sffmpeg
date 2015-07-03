@@ -72,7 +72,7 @@ arch() {
 #
 # Main
 #
-ver=2.5.4
+ver=2.7.1
 #
 rm -fr bin lib share
 [ $? -ne 0 ] && exit 1
