@@ -1,8 +1,8 @@
 **Tested on:**
 <table>
-<tr><td><b>CentOS 6.6</b>        </td><td>i386 and x86_64</td></tr>
-<tr><td><b>Ubuntu 14.04.2 LTS</b></td><td>i386 and x86_64</td></tr>
-<tr><td><b>Debian 7.8</b>        </td><td>i386 and x86_64</td></tr>
+<tr><td><b>CentOS 6.8</b>        </td><td>i386 and x86_64</td></tr>
+<tr><td><b>Ubuntu 14.04.5 LTS</b></td><td>i386 and x86_64</td></tr>
+<tr><td><b>Debian 7.11</b>       </td><td>i386 and x86_64</td></tr>
 </table>
 
 **Build with:**
@@ -12,7 +12,11 @@
 
 **Result:**
 <pre>
-package/ffmpeg-&lt;ver&gt;-&lt;os&gt;-&lt;os_ver&gt;-&lt;arch&gt;.tar.bz2
+package/ffmpeg-&lt;ver&gt;-&lt;rev&gt;-&lt;arch&gt;.tar.bz2
+</pre>
+and additionally on Ubuntu/Centos:
+<pre>
+package/ffmpeg_&lt;ver&gt;-&lt;rev&gt;_&lt;arch&gt;.deb
 </pre>
 
 **Built files:**
@@ -32,12 +36,12 @@ build/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c      --> /usr/share/ffmpeg/examp
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile --> /usr/share/ffmpeg/examples/
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/README   --> /usr/share/ffmpeg/examples/
 
-build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-2.7.1/
-build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-2.7.1/
+build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-3.2.2/
+build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-3.2.2/
 </pre>
