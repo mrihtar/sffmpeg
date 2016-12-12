@@ -14,7 +14,7 @@
 <pre>
 package/ffmpeg-&lt;ver&gt;-&lt;rev&gt;-&lt;arch&gt;.tar.bz2
 </pre>
-and additionally on Ubuntu/Centos:
+and additionally on Ubuntu/Debian:
 <pre>
 package/ffmpeg_&lt;ver&gt;-&lt;rev&gt;_&lt;arch&gt;.deb
 </pre>
