@@ -146,15 +146,17 @@ cd DEBIAN
 cat > control << EOF
 Package: ffmpeg
 Version: $ver-$rev
-Section: misc
+Section: video
 Priority: optional
 Architecture: $arc
 Installed-Size: $size
 Maintainer: Matjaz Rihtar <matjaz@eunet.si>
 Homepage: https://github.com/mrihtar/sffmpeg
-Description: FFmpeg
- FFmpeg is a simple program, which prints out "ffmpeg".
- You can run it anytime and it will never dissapoint.
+Description: Tool for transcoding, streaming and playing of multimedia files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
 EOF
 [ $? -ne 0 ] && exit 1
 cd $HD
