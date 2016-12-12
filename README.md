@@ -8,8 +8,8 @@ Static <b>ffmpeg v3.2.2</b> build from this repository currently compiles on:
 <td rowspan="3">
 <img src="http://www.movieconverter-studio.com/_PUBLIC/ffmpeg/logo-new/ffmpeg-logo-src/ffmpeg-logo.png" height="90">
 </td></tr>
-<tr><td><b>Ubuntu 14.04.5 LTS</b></td><td>i386 and x86_64</td></tr>
-<tr><td><b>Debian 7.11</b>       </td><td>i386 and x86_64</td></tr>
+<tr><td><b>Ubuntu 14.04.5 LTS</b></td><td>i386 and amd64</td></tr>
+<tr><td><b>Debian 7.11</b>       </td><td>i386 and amd64</td></tr>
 </table>
 
 For build see [BUILD.md].

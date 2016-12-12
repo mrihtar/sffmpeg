@@ -1,8 +1,8 @@
 **Tested on:**
 <table>
 <tr><td><b>CentOS 6.8</b>        </td><td>i386 and x86_64</td></tr>
-<tr><td><b>Ubuntu 14.04.5 LTS</b></td><td>i386 and x86_64</td></tr>
-<tr><td><b>Debian 7.11</b>       </td><td>i386 and x86_64</td></tr>
+<tr><td><b>Ubuntu 14.04.5 LTS</b></td><td>i386 and amd64</td></tr>
+<tr><td><b>Debian 7.11</b>       </td><td>i386 and amd64</td></tr>
 </table>
 
 **Build with:**

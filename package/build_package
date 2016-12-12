@@ -56,12 +56,17 @@ os_ver() {
 }
 #
 arch() {
+  os=`os`
   case `uname -m` in
     i386 | i486 | i586 | i686 )
       echo i386
       ;;
     x86_64 | x64 )
-      echo x86_64
+      if [ "$os" == "Ubuntu" ] || [ "$os" == "Debian" ]; then
+        echo amd64
+      else
+        echo x86_64
+      fi
       ;;
     * )
       uname -m
