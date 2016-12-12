@@ -2,7 +2,7 @@ This repository is an extended clone of https://github.com/pyke369/sffmpeg
 It builds a static version of ffmpeg executable with a lot more external
 libraries included.
 
-Static **ffmpeg v3.2.2** build from this repository currently compiles on:
+Static <b>ffmpeg v3.2.2</b> build from this repository currently compiles on:
 <table>
 <tr><td><b>CentOS 6.8</b>        </td><td>i386 and x86_64</td>
 <td rowspan="3">
