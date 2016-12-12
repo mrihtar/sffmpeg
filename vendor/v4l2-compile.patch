@@ -1,22 +1,11 @@
 --- v4l-utils/configure.org	2014-10-01 10:18:02.000000000 +0200
 +++ v4l-utils/configure	2014-10-03 00:23:37.197009409 +0200
-@@ -18308,7 +18308,7 @@
- fi
- if test "x$qt_pkgconfig_gl" = "xtrue"; then
+@@ -21356,7 +21356,7 @@
+ 
+ 
  
 -$as_echo "#define HAVE_QTGL 1" >>confdefs.h
 +$as_echo "#undef HAVE_QTGL" >>confdefs.h
  
- else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Qt4 OpenGL or higher is not available" >&5
---- v4l-utils/lib/libdvbv5/dvb-file.c.org	2014-09-30 21:07:37.000000000 +0200
-+++ v4l-utils/lib/libdvbv5/dvb-file.c	2014-10-02 23:12:55.849158220 +0200
-@@ -43,8 +43,6 @@
- #include <libdvbv5/desc_sat.h>
- #include <libdvbv5/desc_terrestrial_delivery.h>
- #include <libdvbv5/desc_service.h>
--#include <libdvbv5/desc_service_list.h>
--#include <libdvbv5/desc_frequency_list.h>
- #include <libdvbv5/desc_event_short.h>
- #include <libdvbv5/desc_event_extended.h>
- #include <libdvbv5/desc_atsc_service_location.h>
+    else
+       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Qt5 OpenGL is not available" >&5

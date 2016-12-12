@@ -77,8 +77,7 @@ rev=1
 arc=`arch`
 pkg=ffmpeg_$ver-${rev}_$arc
 #
-rm -fr $pkg
-[ $? -ne 0 ] && exit 1
+if [ ! -d $pkg ]; then
 mkdir -p $pkg
 [ $? -ne 0 ] && exit 1
 cd $pkg
@@ -134,13 +133,35 @@ cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/README* share/doc/ffmpeg-$ver/
 [ $? -ne 0 ] && exit 1
 cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES share/doc/ffmpeg-$ver/
 [ $? -ne 0 ] && exit 1
+fi
 #
-pkg=ffmpeg-$ver-${rev}-$arc
-tar -cvf $HD/$pkg.tar bin lib share
+cd $HD/$pkg
 [ $? -ne 0 ] && exit 1
-echo "Compressing package..."
-bzip2 -9f $HD/$pkg.tar
+size=`du -ks usr | cut -f 1`
 [ $? -ne 0 ] && exit 1
-echo "Packaging done: $HD/$pkg.tar.bz2"
+mkdir -p DEBIAN
+[ $? -ne 0 ] && exit 1
+cd DEBIAN
+[ $? -ne 0 ] && exit 1
+cat > control << EOF
+Package: ffmpeg
+Version: $ver-$rev
+Section: misc
+Priority: optional
+Architecture: $arc
+Installed-Size: $size
+Maintainer: Matjaz Rihtar <matjaz@eunet.si>
+Homepage: https://github.com/mrihtar/sffmpeg
+Description: FFmpeg
+ FFmpeg is a simple program, which prints out "ffmpeg".
+ You can run it anytime and it will never dissapoint.
+EOF
+[ $? -ne 0 ] && exit 1
+cd $HD
+[ $? -ne 0 ] && exit 1
+echo "Creating package..."
+dpkg-deb -b $pkg
+[ $? -ne 0 ] && exit 1
+echo "Packaging done: $HD/$pkg.deb"
 #
 exit 0

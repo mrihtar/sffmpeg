@@ -81,7 +81,7 @@ case `os` in
     ./ubuntu-prereq
     [ $? -ne 0 ] && exit 1
     if [ ! -f .prereq_done ]; then
-      patch -p0 < vendor/cmake-udev.patch
+      patch -N -p0 < vendor/cmake-udev.patch
       [ $? -ne 0 ] && exit 1
       case `os_ver` in
         12.* )
@@ -107,7 +107,7 @@ case `os` in
     ./debian-prereq
     [ $? -ne 0 ] && exit 1
     if [ ! -f .prereq_done ]; then
-      patch -p0 < vendor/cmake-udev.patch
+      patch -N -p0 < vendor/cmake-udev.patch
       [ $? -ne 0 ] && exit 1
       case `os_ver` in
         7.* )
@@ -147,5 +147,11 @@ cd package
 [ $? -ne 0 ] && exit 1
 ./build_package
 [ $? -ne 0 ] && exit 1
+case `os` in
+  Ubuntu | Debian )
+    ./build_debian_package
+    [ $? -ne 0 ] && exit 1
+    ;;
+esac
 #
 exit 0
