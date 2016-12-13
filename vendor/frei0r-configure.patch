@@ -1,5 +1,5 @@
---- a/configure.ac	2016-04-02 02:29:38.000000000 +0200
-+++ b/configure.ac	2016-12-07 23:51:48.768538287 +0100
+--- frei0r/configure.ac.org	2016-04-02 02:29:38.000000000 +0200
++++ frei0r/configure.ac	2016-12-07 23:51:48.768538287 +0100
 @@ -5,7 +5,7 @@
  AC_INIT(frei0r-plugins, [1.5.0], [frei0r-devel@dyne.org])
  AC_CONFIG_MACRO_DIR([m4])

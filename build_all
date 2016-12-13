@@ -143,6 +143,8 @@ if [ "$cmake_ver" -lt "020808" ]; then
 fi
 make 2>&1 | tee make.log
 [ $? -ne 0 ] && exit 1
+tail -1 make.log | grep -q 'Error 2'
+[ ${PIPESTATUS[0]} -ne 0 -o ${PIPESTATUS[1]} -eq 0 ] && exit 1
 cd package
 [ $? -ne 0 ] && exit 1
 ./build_package

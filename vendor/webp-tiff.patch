@@ -1,0 +1,13 @@
+--- webp/imageio/tiffdec.c.org	2016-12-13 16:17:17.051031848 +0100
++++ webp/imageio/tiffdec.c	2016-12-13 16:18:55.115031202 +0100
+@@ -21,6 +21,10 @@
+ #ifdef WEBP_HAVE_TIFF
+ #include <tiffio.h>
+ 
++#ifndef tmsize_t
++#define tmsize_t tsize_t
++#endif
++
+ #include "webp/encode.h"
+ #include "./imageio_util.h"
+ #include "./metadata.h"

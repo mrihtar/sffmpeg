@@ -116,7 +116,7 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   x265
   DEPENDS yasm
-  DOWNLOAD_COMMAND hg clone --insecure https://bitbucket.org/multicoreware/x265
+  DOWNLOAD_COMMAND hg clone https://bitbucket.org/multicoreware/x265
 # UPDATE_COMMAND hg update -r stable
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND cd build/linux && PATH=$ENV{PATH} cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DENABLE_CLI:BOOL=OFF -DENABLE_SHARED:BOOL=OFF ../../source
@@ -416,6 +416,7 @@ EXTERNALPROJECT_ADD(
   webp
   GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
   UPDATE_COMMAND ""
+  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/webp-tiff.patch
   CONFIGURE_COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
