@@ -132,7 +132,7 @@ case `os` in
 esac
 #
 cmake_ver=`cmake --version 2> /dev/null | awk '{split($3, a, "."); printf("%02d%02d%02d", a[1], a[2], a[3]); exit}'`
-if [ "$cmake_ver" -lt "030000" ]; then
+if [ "$cmake_ver" -lt "030100" ]; then
   # Build latest cmake
   cd cmake
   [ $? -ne 0 ] && exit 1
