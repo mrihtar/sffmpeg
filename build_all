@@ -132,7 +132,7 @@ case `os` in
 esac
 #
 cmake_ver=`cmake --version 2> /dev/null | awk '{split($3, a, "."); printf("%02d%02d%02d", a[1], a[2], a[3]); exit}'`
-if [ "$cmake_ver" -lt "020808" ]; then
+if [ "$cmake_ver" -lt "030000" ]; then
   # Build latest cmake
   cd cmake
   [ $? -ne 0 ] && exit 1
@@ -143,7 +143,7 @@ if [ "$cmake_ver" -lt "020808" ]; then
 fi
 make 2>&1 | tee make.log
 [ $? -ne 0 ] && exit 1
-tail -1 make.log | grep -q 'Error 2'
+tail -1 make.log | grep -q 'Error [12]'
 [ ${PIPESTATUS[0]} -ne 0 -o ${PIPESTATUS[1]} -eq 0 ] && exit 1
 cd package
 [ $? -ne 0 ] && exit 1

@@ -1,8 +1,8 @@
 #!/bin/bash
-ver=3.0.2
+ver=3.7.1
 #
 if [ ! -s cmake-$ver.tar.gz ]; then
-  wget http://www.cmake.org/files/v3.0/cmake-$ver.tar.gz
+  wget http://www.cmake.org/files/v${ver%.*}/cmake-$ver.tar.gz
   [ $? -ne 0 ] && exit 1
 fi
 rm -fr cmake-$ver
@@ -14,8 +14,6 @@ cd cmake-$ver
 patch -p0 < ../bootstrap.patch
 [ $? -ne 0 ] && exit 1
 ./bootstrap
-[ $? -ne 0 ] && exit 1
-patch -p0 < ../cmakecache.patch
 [ $? -ne 0 ] && exit 1
 make install 2>&1 | tee make.log
 [ $? -ne 0 ] && exit 1
