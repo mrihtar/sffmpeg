@@ -2,6 +2,8 @@ PROJECT(sffmpeg)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 INCLUDE(ExternalProject)
+ADD_EXECUTABLE(target target.c)
+ADD_DEPENDENCIES(target frmxtract)
 INCLUDE_DIRECTORIES(BEFORE ${CMAKE_BINARY_DIR}/include)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/lib)
 SET(ENV{PATH} ${CMAKE_BINARY_DIR}/bin:$ENV{PATH})
@@ -448,7 +450,7 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   ffmpeg
-  DEPENDS bzip2 xz yasm opencore-amr fdkaac mp3lame ogg speex vorbis theora opus xvidcore x264 x265 vpx rtmp freetype ass frei0r bluray bs2b caca cdio-paranoia dc1394 flite gsm iec61883 ilbc modplug nut openjpeg schroedinger shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xavs zmq zvbi
+  DEPENDS bluray bzip2 caca cairo cdio expat fdkaac flite fribidi gavl gsm ilbc modplug mp3lame nut ogg opencore-amr openjpeg openssl opus orc raw1394 shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xz yasm z zmq zvbi vpx x264 x265 xavs xvidcore flac speex vorbis theora freetype cdio-paranoia avc1394 dc1394 schroedinger rtmp fontconfig ass frei0r sndfile bs2b iec61883
   URL http://www.ffmpeg.org/releases/ffmpeg-3.2.2.tar.bz2
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/ffmpeg-ism-offset.patch
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/usr/share/ffmpeg --disable-shared --enable-static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --disable-ffserver --enable-runtime-cpudetect --enable-memalign-hack --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -ldl\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lorc-0.4\ -lv4lconvert\ -ljpeg\ -lncurses\ -ltinfo\ -lgpm\ -lbluray\ -lgomp\ -lrt\ -llzma\ -lz\ -lm --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfdk-aac --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libnut --enable-libopenjpeg --enable-libschroedinger --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi
