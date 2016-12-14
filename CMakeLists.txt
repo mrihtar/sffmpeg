@@ -216,6 +216,7 @@ EXTERNALPROJECT_ADD(
   DEPENDS ogg
   URL http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz
 # URL http://helium.ijs.si/flac-1.3.1.tar.bz2
+  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/flac-configure.patch
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -351,8 +352,9 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   schroedinger
   DEPENDS orc
-  URL http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz
-# URL http://helium.ijs.si/schroedinger-1.0.11.tar.gz
+# URL http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz
+# Schroedinger is currently not available...
+  URL http://helium.ijs.si/schroedinger-1.0.11.tar.gz
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/schroedinger-configure.patch
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
   BUILD_COMMAND PATH=$ENV{PATH} make

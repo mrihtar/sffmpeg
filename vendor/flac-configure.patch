@@ -1,0 +1,55 @@
+--- flac/configure.ac.org	2016-12-14 15:05:46.674024166 +0100
++++ flac/configure.ac	2016-12-14 15:05:52.970023708 +0100
+@@ -385,6 +385,10 @@
+ 		XIPH_ADD_CFLAGS([-fgnu89-inline])
+ 		fi
+ 
++	if test "x$GCC_MAJOR_VERSION$GCC_MINOR_VERSION" = "x47" ; then
++		XIPH_ADD_CFLAGS([-fno-inline-small-functions])
++		fi
++
+ 	if test "x$asm_optimisation$sse_os" = "xyesyes" ; then
+ 		XIPH_ADD_CFLAGS([-msse2])
+ 		fi
+--- flac/configure.org	2016-12-14 15:06:54.762021590 +0100
++++ flac/configure	2016-12-14 15:07:01.782021383 +0100
+@@ -20043,6 +20043,39 @@
+ else
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+ $as_echo "no" >&6; }
++			CFLAGS="$ac_add_cflags__old_cflags"
++
++fi
++rm -f core conftest.err conftest.$ac_objext \
++    conftest$ac_exeext conftest.$ac_ext
++
++		fi
++
++	if test "x$GCC_MAJOR_VERSION$GCC_MINOR_VERSION" = "x47" ; then
++		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking if $CC accepts -fno-inline-small-functions" >&5
++$as_echo_n "checking if $CC accepts -fno-inline-small-functions... " >&6; }
++	ac_add_cflags__old_cflags="$CFLAGS"
++	CFLAGS="-fno-inline-small-functions"
++	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
++/* end confdefs.h.  */
++
++			#include <stdio.h>
++
++int
++main ()
++{
++puts("Hello, World!"); return 0;
++  ;
++  return 0;
++}
++_ACEOF
++if ac_fn_c_try_link "$LINENO"; then :
++  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
++$as_echo "yes" >&6; }
++			CFLAGS="$ac_add_cflags__old_cflags -fno-inline-small-functions"
++else
++  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
++$as_echo "no" >&6; }
+ 			CFLAGS="$ac_add_cflags__old_cflags"
+ 
+ fi
