@@ -2,8 +2,6 @@ PROJECT(sffmpeg)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1) # needed for .xz support in ExternalProjects
 INCLUDE(ExternalProject)
-ADD_EXECUTABLE(target target.c)
-ADD_DEPENDENCIES(target frmxtract)
 INCLUDE_DIRECTORIES(BEFORE ${CMAKE_BINARY_DIR}/include)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/lib)
 SET(ENV{PATH} ${CMAKE_BINARY_DIR}/bin:$ENV{PATH})
