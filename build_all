@@ -107,7 +107,7 @@ case `os` in
     ./debian-prereq
     [ $? -ne 0 ] && exit 1
     if [ ! -f .prereq_done ]; then
-      patch -N -p0 < vendor/cmake-udev-debian.patch
+      patch -N -p0 < vendor/cmake-udev.patch
       [ $? -ne 0 ] && exit 1
       case `os_ver` in
         7.* )

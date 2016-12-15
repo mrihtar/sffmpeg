@@ -1,6 +1,6 @@
 PROJECT(sffmpeg)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1) # needed for .xz support in ExternalProjects
 INCLUDE(ExternalProject)
 ADD_EXECUTABLE(target target.c)
 ADD_DEPENDENCIES(target frmxtract)
@@ -190,8 +190,9 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   cairo
-  URL https://www.cairographics.org/releases/cairo-1.14.6.tar.xz
-# URL http://helium.ijs.si/cairo-1.14.6.tar.bz2
+# URL https://www.cairographics.org/releases/cairo-1.14.6.tar.xz
+# Stay with older version for now
+  URL https://www.cairographics.org/releases/cairo-1.12.18.tar.xz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -216,8 +217,9 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   flac
   DEPENDS ogg
-  URL http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz
-# URL http://helium.ijs.si/flac-1.3.1.tar.bz2
+# URL http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz
+# Stay with older version for now
+  URL http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/flac-configure.patch
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
@@ -346,7 +348,6 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   orc
   URL https://gstreamer.freedesktop.org/src/orc/orc-0.4.26.tar.xz
-# URL http://helium.ijs.si/orc-0.4.26.tar.gz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -373,7 +374,6 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   soxr
   URL http://netcologne.dl.sourceforge.net/project/soxr/soxr-0.1.2-Source.tar.xz
-# URL http://helium.ijs.si/soxr-0.1.2-Source.tar.bz2
   CONFIGURE_COMMAND mkdir -p Release COMMAND cd Release && cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF ..
   BUILD_COMMAND cd Release && make
   INSTALL_COMMAND cd Release && make install
