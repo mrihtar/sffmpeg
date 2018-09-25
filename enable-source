@@ -1,0 +1,19 @@
+#!/bin/bash
+TMPFILE=`mktemp /tmp/${0##*/}.XXXXX`
+trap 'rm -f $TMPFILE' 0
+#
+LIST=/etc/apt/sources.list
+gawk '{
+  if (match($0, "^[[:space:]]*#[[:space:]]*deb-src[[:space:]]")) {
+    line = gensub("^[[:space:]]*#[[:space:]]*(.*)", "\\1", 1, $0);
+    print line;
+  }
+  else {
+    print $0;
+  }
+}' "$LIST" > $TMPFILE
+[ $? -ne 0 ] && exit 1
+cp $TMPFILE "$LIST"
+[ $? -ne 0 ] && exit 1
+#
+exit 0

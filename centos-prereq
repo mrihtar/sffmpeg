@@ -1,5 +1,5 @@
 #!/bin/bash
-HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
+HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
 #
 [ -f .prereq_done ] && exit 0
 yum -y install cmake git mercurial

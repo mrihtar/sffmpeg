@@ -1,5 +1,5 @@
 #!/bin/bash
-HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
+HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
 #
 arch1() {
   case `uname -m` in
@@ -37,13 +37,13 @@ apt-get -y install libxml2-dev libfreetype6-dev
 [ $? -ne 0 ] && exit 1
 apt-get -y install libpixman-1-dev libxext-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install libjpeg-dev libpng12-dev libtiff5-dev
+apt-get -y install libjpeg-dev libpng-dev libtiff-dev
 [ $? -ne 0 ] && exit 1
 apt-get -y install libusb-1.0-0-dev libncurses5-dev libgpm-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install openjdk-7-jdk ant
+apt-get -y install openjdk-8-jdk ant
 [ $? -ne 0 ] && exit 1
-update-alternatives --set java /usr/lib/jvm/java-7-openjdk-`arch1`/jre/bin/java
+update-alternatives --set java /usr/lib/jvm/java-8-openjdk-`arch1`/jre/bin/java
 [ $? -ne 0 ] && exit 1
 if [ ! -s /usr/include/linux/media.h ]; then
   cp "$HD/media.h" /usr/include/linux

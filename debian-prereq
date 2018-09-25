@@ -1,5 +1,5 @@
 #!/bin/bash
-HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
+HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
 #
 arch1() {
   case `uname -m` in

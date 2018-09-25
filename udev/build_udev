@@ -97,23 +97,19 @@ esac
 #
 cd $DIR
 [ $? -ne 0 ] && exit 1
-autoreconf -i
+meson --default-library static build 2>&1 | tee meson.log
 [ $? -ne 0 ] && exit 1
-./configure --enable-static 2>&1 | tee configure.log
+ninja -C build 2>&1 | tee ninja.log
 [ $? -ne 0 ] && exit 1
 case `os` in
   Ubuntu )
-    make libudev.la 2>&1 | tee make.log
-    [ $? -ne 0 ] && exit 1
-    echo cp .libs/libudev.a /usr/lib/`arch`-linux-gnu
-    cp .libs/libudev.a /usr/lib/`arch`-linux-gnu
+    echo cp build/src/udev/libudev.a /usr/lib/`arch`-linux-gnu
+    cp build/src/udev/libudev.a /usr/lib/`arch`-linux-gnu
     [ $? -ne 0 ] && exit 1
     ;;
   Debian )
-    make libudev/libudev.la 2>&1 | tee make.log
-    [ $? -ne 0 ] && exit 1
-    echo cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu
-    cp libudev/.libs/libudev.a /lib/`arch`-linux-gnu
+    echo cp build/src/udev/libudev.a /lib/`arch`-linux-gnu
+    cp build/src/udev/libudev.a /lib/`arch`-linux-gnu
     [ $? -ne 0 ] && exit 1
     ;;
   * )

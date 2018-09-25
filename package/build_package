@@ -1,5 +1,5 @@
 #!/bin/bash
-HD=`cd "${0%/*}" 2>/dev/null; echo $PWD`
+HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
 #
 os() {
   case `uname` in
@@ -95,7 +95,7 @@ cd usr/local
 mkdir -p bin lib/frei0r-1 share/man/man1 share/ffmpeg/examples share/doc/ffmpeg-$ver
 [ $? -ne 0 ] && exit 1
 #
-BUILD=$HD/../build
+BUILD=`realpath $HD/../build`
 #
 cp -p $BUILD/bin/ffmpeg bin/
 [ $? -ne 0 ] && exit 1

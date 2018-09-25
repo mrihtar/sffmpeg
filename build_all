@@ -78,28 +78,25 @@ case `os` in
     touch .prereq_done
     ;;
   Ubuntu )
+    ./enable-source
+    [ $? -ne 0 ] && exit 1
     ./ubuntu-prereq
     [ $? -ne 0 ] && exit 1
     if [ ! -f .prereq_done ]; then
+      # patch ffmpeg's CMakeLists.txt for udev
       patch -N -p0 < vendor/cmake-udev.patch
       [ $? -ne 0 ] && exit 1
-      case `os_ver` in
-        12.* )
-          apt-get -y install libudev-dev
-          [ $? -ne 0 ] && exit 1
-          ;;
-        14.* )
-          if [ ! -s /lib/`arch`-linux-gnu/libudev.a ]; then
-            # Build static libudev
-            cd udev
-            [ $? -ne 0 ] && exit 1
-            ./build_udev
-            [ $? -ne 0 ] && exit 1
-            cd ..
-            [ $? -ne 0 ] && exit 1
-          fi
-          ;;
-      esac
+      apt-get -y install libudev-dev
+      [ $? -ne 0 ] && exit 1
+      if [ ! -s /lib/`arch`-linux-gnu/libudev.a ]; then
+        # Build static libudev
+        cd udev
+        [ $? -ne 0 ] && exit 1
+        ./build_udev
+        [ $? -ne 0 ] && exit 1
+        cd ..
+        [ $? -ne 0 ] && exit 1
+      fi
     fi
     touch .prereq_done
     ;;
@@ -132,7 +129,7 @@ case `os` in
 esac
 #
 cmake_ver=`cmake --version 2> /dev/null | awk '{split($3, a, "."); printf("%02d%02d%02d", a[1], a[2], a[3]); exit}'`
-if [ "$cmake_ver" -lt "030100" ]; then
+if [ "$cmake_ver" -lt "030200" ]; then
   # Build latest cmake
   cd cmake
   [ $? -ne 0 ] && exit 1

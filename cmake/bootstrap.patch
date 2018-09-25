@@ -1,6 +1,6 @@
---- bootstrap.org	2014-09-11 15:24:02.000000000 +0200
-+++ bootstrap	2014-10-12 15:54:02.464196102 +0200
-@@ -203,7 +203,7 @@
+--- bootstrap.orig	2018-09-07 12:49:10.000000000 +0200
++++ bootstrap	2018-09-25 17:35:14.774164543 +0200
+@@ -215,7 +215,7 @@
  elif ${cmake_system_haiku}; then
    cmake_default_prefix=`finddir B_COMMON_DIRECTORY`
  else
