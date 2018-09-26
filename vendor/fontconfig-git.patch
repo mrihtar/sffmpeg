@@ -1,0 +1,126 @@
+--- fontconfig/doc/fcstring.fncs.org	2016-07-11 04:41:06.000000000 +0200
++++ fontconfig/doc/fcstring.fncs	2018-09-26 11:57:51.702292400 +0200
+@@ -224,6 +224,18 @@
+ @@
+ 
+ @RET@		FcChar8 *
++@FUNC@		FcStrBuildFilename
++@TYPE1@		const FcChar8 *			@ARG1@		path
++@TYPE2@		...
++@PURPOSE@	Concatenate strings as a file path
++@DESC@
++Creates a filename from the given elements of strings as file paths
++and concatenate them with the appropriate file separator.
++Arguments must be null-terminated.
++This returns a newly-allocated memory which should be freed when no longer needed.
++@@
++
++@RET@		FcChar8 *
+ @FUNC@		FcStrDirname
+ @TYPE1@		const FcChar8 *			@ARG1@		file
+ @PURPOSE@	directory part of filename
+--- fontconfig/fontconfig/fontconfig.h.org	2018-08-30 10:20:16.000000000 +0200
++++ fontconfig/fontconfig/fontconfig.h	2018-09-26 11:57:51.917304700 +0200
+@@ -1077,6 +1077,10 @@
+ 	    int		    *wchar);
+ 
+ FcPublic FcChar8 *
++FcStrBuildFilename (const FcChar8 *path,
++		    ...);
++
++FcPublic FcChar8 *
+ FcStrDirname (const FcChar8 *file);
+ 
+ FcPublic FcChar8 *
+--- fontconfig/src/fcint.h.org	2018-07-19 05:14:40.000000000 +0200
++++ fontconfig/src/fcint.h	2018-09-26 11:57:51.952306700 +0200
+@@ -1283,10 +1283,6 @@
+ FcStrIsAbsoluteFilename (const FcChar8 *s);
+ 
+ FcPrivate FcChar8 *
+-FcStrBuildFilename (const FcChar8 *path,
+-		    ...);
+-
+-FcPrivate FcChar8 *
+ FcStrLastSlash (const FcChar8  *path);
+ 
+ FcPrivate FcChar32
+--- fontconfig/test/test-bz106632.c.org	2018-08-29 11:55:14.000000000 +0200
++++ fontconfig/test/test-bz106632.c	2018-09-26 11:57:51.977308100 +0200
+@@ -25,25 +25,26 @@
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
++#include <stdio.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include <dirent.h>
++#include <unistd.h>
++#include <errno.h>
+ #ifndef HAVE_STRUCT_DIRENT_D_TYPE
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ #endif
+-#include "fcstr.c"
+-#undef FcConfigBuildFonts
+-#undef FcConfigCreate
+-#undef FcConfigGetCurrent
+-#undef FcConfigParseAndLoadFromMemory
+-#undef FcConfigUptoDate
+-#undef FcFontList
+-#undef FcInitReinitialize
+-#undef FcPatternCreate
+-#undef FcPatternDestroy
+ #include <fontconfig/fontconfig.h>
+ 
++#ifdef _WIN32
++#  define FC_DIR_SEPARATOR         '\\'
++#  define FC_DIR_SEPARATOR_S       "\\"
++#else
++#  define FC_DIR_SEPARATOR         '/'
++#  define FC_DIR_SEPARATOR_S       "/"
++#endif
++
+ #ifdef HAVE_MKDTEMP
+ #define fc_mkdtemp	mkdtemp
+ #else
+@@ -154,18 +155,6 @@
+     return ret;
+ }
+ 
+-FcChar8 *
+-FcLangNormalize (const FcChar8 *lang)
+-{
+-    return NULL;
+-}
+-
+-FcChar8 *
+-FcConfigHome (void)
+-{
+-    return NULL;
+-}
+-
+ int
+ main (void)
+ {
+--- fontconfig/src/fccfg.c.org	2018-07-19 09:53:00.000000000 +0200
++++ fontconfig/src/fccfg.c	2018-09-26 11:57:51.000000000 +0200
+@@ -2207,7 +2207,8 @@
+ 	else
+ 	    file = 0;
+     }
+-
++    else
++    {
+     path = FcConfigGetPath ();
+     if (!path)
+ 	return NULL;
+@@ -2218,6 +2219,7 @@
+ 	    break;
+     }
+     FcConfigFreePath (path);
++    }
+     return file;
+ }
+ 

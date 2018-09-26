@@ -1,4 +1,6 @@
 #!/bin/bash
+HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
+#
 os() {
   case `uname` in
     Linux )
@@ -77,7 +79,7 @@ case `os` in
     apt-get -y build-dep libudev1
     [ $? -ne 0 ] && exit 1
     DIR=`find . -type d -name 'systemd*' -prune`
-    DIR=`basename "$DIR"`
+    DIR=`realpath "$DIR"`
     ;;
   Debian )
     apt-get -y source udev
@@ -87,7 +89,7 @@ case `os` in
     dpkg-source -x `basename udev*.dsc`
     [ $? -ne 0 ] && exit 1
     DIR=`find . -type d -name 'udev*' -prune`
-    DIR=`basename "$DIR"`
+    DIR=`realpath "$DIR"`
     ;;
   * )
     echo "Unsupported operating system: `os`" 1>&2
@@ -95,21 +97,24 @@ case `os` in
     ;;
 esac
 #
-cd $DIR
+cd "$DIR"
 [ $? -ne 0 ] && exit 1
 meson --default-library static build 2>&1 | tee meson.log
 [ $? -ne 0 ] && exit 1
 ninja -C build 2>&1 | tee ninja.log
 [ $? -ne 0 ] && exit 1
+cd - > /dev/null
+./merge-libs "$DIR"
+[ $? -ne 0 ] && exit 1
 case `os` in
   Ubuntu )
-    echo cp build/src/udev/libudev.a /usr/lib/`arch`-linux-gnu
-    cp build/src/udev/libudev.a /usr/lib/`arch`-linux-gnu
+    echo cp libudev.a /usr/lib/`arch`-linux-gnu
+    cp libudev.a /usr/lib/`arch`-linux-gnu
     [ $? -ne 0 ] && exit 1
     ;;
   Debian )
-    echo cp build/src/udev/libudev.a /lib/`arch`-linux-gnu
-    cp build/src/udev/libudev.a /lib/`arch`-linux-gnu
+    echo cp libudev.a /lib/`arch`-linux-gnu
+    cp libudev.a /lib/`arch`-linux-gnu
     [ $? -ne 0 ] && exit 1
     ;;
   * )

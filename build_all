@@ -1,4 +1,6 @@
 #!/bin/bash
+HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
+#
 os() {
   case `uname` in
     Linux )
@@ -69,6 +71,9 @@ arch() {
 }
 #
 # Main
+#
+cd "$HD"
+[ $? -ne 0 ] && exit 1
 #
 unset JAVA_HOME
 case `os` in

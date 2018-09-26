@@ -1,0 +1,29 @@
+#!/bin/bash
+TMPFILE=`mktemp /tmp/${0##*/}.XXXXX`
+trap 'rm -f $TMPFILE' 0
+#
+rm -f libudev.a
+cp "$1/build/src/basic/libbasic.a" .
+[ $? -ne 0 ] && exit 1
+cp "$1/build/src/udev/libudev-basic.a" .
+[ $? -ne 0 ] && exit 1
+cp "$1/build/src/udev/libudev-core.a" .
+[ $? -ne 0 ] && exit 1
+cp "$1/build/src/libsystemd/libsystemd.a" .
+[ $? -ne 0 ] && exit 1
+#
+cat > $TMPFILE << EOF
+create libudev.a
+addlib libbasic.a
+addlib libudev-basic.a
+addlib libudev-core.a
+addlib libsystemd.a
+save
+end
+EOF
+[ $? -ne 0 ] && exit 1
+echo Merging udev libraries into libudev.a
+ar -M < $TMPFILE
+[ $? -ne 0 ] && exit 1
+#
+exit 0

@@ -12,6 +12,8 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/sbin)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/share/man)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/man/man1)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/man/man3)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/ssl)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/var)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
@@ -19,6 +21,12 @@ SET(CMAKE_VERBOSE_MAKEFILE ON)
 EXTERNALPROJECT_ADD(
   yasm
   URL http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR}
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  nasm
+  URL https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.gz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR}
   BUILD_IN_SOURCE 1
 )
@@ -92,7 +100,7 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   theora
-  DEPENDS ogg
+  DEPENDS ogg vorbis
 # URL http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.gz
   URL http://downloads.xiph.org/releases/theora/libtheora-1.2.0alpha1.tar.gz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --disable-oggtest --disable-examples --with-ogg=${CMAKE_BINARY_DIR}
@@ -116,7 +124,7 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   x264
-  DEPENDS yasm
+  DEPENDS nasm
   GIT_REPOSITORY git://git.videolan.org/x264.git
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
@@ -178,7 +186,8 @@ EXTERNALPROJECT_ADD(
   fontconfig
   DEPENDS freetype expat
   URL https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
+  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/fontconfig-git.patch
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --disable-docs CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -202,7 +211,7 @@ EXTERNALPROJECT_ADD(
   URL https://www.cairographics.org/snapshots/cairo-1.15.12.tar.xz
 # Stay with older version for now
 # URL https://www.cairographics.org/releases/cairo-1.12.18.tar.xz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --enable-tee --enable-xml --enable-qt --enable-gl CFLAGS=-fPIC
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -210,7 +219,7 @@ EXTERNALPROJECT_ADD(
   frei0r
   DEPENDS gavl cairo
   URL https://files.dyne.org/frei0r/releases/frei0r-plugins-1.6.1.tar.gz
-  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/frei0r-configure.patch
+# PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/frei0r-configure.patch
   CONFIGURE_COMMAND touch README ChangeLog TODO AUTHORS COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -229,7 +238,7 @@ EXTERNALPROJECT_ADD(
   URL http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz
 # Stay with older version for now
 # URL http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz
-  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/flac-configure.patch
+# PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/flac-configure.patch
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -399,7 +408,7 @@ EXTERNALPROJECT_ADD(
   v4l2
   URL https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.2.tar.bz2
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/v4l2-compile.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared LDFLAGS=-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -421,7 +430,7 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   wavpack
   URL http://www.wavpack.com/wavpack-5.1.0.tar.bz2
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --enable-mmx
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -430,7 +439,7 @@ EXTERNALPROJECT_ADD(
   GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
   UPDATE_COMMAND ""
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/webp-tiff.patch
-  CONFIGURE_COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  CONFIGURE_COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-libwebpmux --enable-libwebpdecoder --enable-libwebpextras
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )

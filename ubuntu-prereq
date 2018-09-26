@@ -19,27 +19,27 @@ arch1() {
 [ -f .prereq_done ] && exit 0
 apt-get update
 [ $? -ne 0 ] && exit 1
+apt-get -y install gcc make build-essential
+[ $? -ne 0 ] && exit 1
 apt-get -y install cmake git mercurial subversion
 [ $? -ne 0 ] && exit 1
-apt-get -y install libssl-dev
-[ $? -ne 0 ] && exit 1
-#yum -y install cmake
-#[ $? -ne 0 ] && exit 1
-# Official cmake is too old, compile from sources!
+# If official cmake is too old, compile from sources!
 # (see cmake/buil_cmake)
-apt-get -y install autoconf libtool pkg-config
+apt-get -y install autoconf libtool autoconf-archive pkg-config
 [ $? -ne 0 ] && exit 1
 apt-get -y install devscripts debhelper curl
 [ $? -ne 0 ] && exit 1
-#apt-get -y install doxygen
-#[ $? -ne 0 ] && exit 1
-apt-get -y install libxml2-dev libfreetype6-dev
+apt-get -y install doxygen asciidoc xmlto gtk-doc
 [ $? -ne 0 ] && exit 1
-apt-get -y install libpixman-1-dev libxext-dev
+apt-get -y install libssl-dev libxml2-dev libfreetype6-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install libjpeg-dev libpng-dev libtiff-dev
+apt-get -y install libpixman-1-dev libxext-dev libsdl1.2-dev libsdl2-dev
+[ $? -ne 0 ] && exit 1
+apt-get -y install libjpeg-dev libpng-dev libtiff-dev libgif-dev
 [ $? -ne 0 ] && exit 1
 apt-get -y install libusb-1.0-0-dev libncurses5-dev libgpm-dev
+[ $? -ne 0 ] && exit 1
+apt-get -y install qt4-dev-tools
 [ $? -ne 0 ] && exit 1
 apt-get -y install openjdk-8-jdk ant
 [ $? -ne 0 ] && exit 1
