@@ -29,19 +29,21 @@ apt-get -y install autoconf libtool autoconf-archive pkg-config
 [ $? -ne 0 ] && exit 1
 apt-get -y install devscripts debhelper curl
 [ $? -ne 0 ] && exit 1
-apt-get -y install doxygen asciidoc xmlto gtk-doc
+apt-get -y install doxygen asciidoc xmlto gtk-doc-tools graphviz
 [ $? -ne 0 ] && exit 1
 apt-get -y install libssl-dev libxml2-dev libfreetype6-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install libpixman-1-dev libxext-dev libsdl1.2-dev libsdl2-dev
+apt-get -y install libpixman-1-dev libxext-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install libjpeg-dev libpng-dev libtiff-dev libgif-dev
+apt-get -y install libsdl1.2-dev libsdl2-dev libsdl2-image-dev
+[ $? -ne 0 ] && exit 1
+apt-get -y install libjpeg-dev libpng-dev libtiff-dev libgif-dev libimlib2-dev
 [ $? -ne 0 ] && exit 1
 apt-get -y install libusb-1.0-0-dev libncurses5-dev libgpm-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install qt4-dev-tools
+apt-get -y install qt4-dev-tools libgtk2.0-dev libsqlite3-dev
 [ $? -ne 0 ] && exit 1
-apt-get -y install openjdk-8-jdk ant
+apt-get -y install openjdk-8-jdk ant ruby-dev
 [ $? -ne 0 ] && exit 1
 update-alternatives --set java /usr/lib/jvm/java-8-openjdk-`arch1`/jre/bin/java
 [ $? -ne 0 ] && exit 1

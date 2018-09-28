@@ -53,8 +53,9 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   openssl
-# URL https://www.openssl.org/source/openssl-1.0.2j.tar.gz
-  URL https://www.openssl.org/source/openssl-1.1.1.tar.gz
+# Stay with older version for now (for rtmp)
+  URL https://www.openssl.org/source/openssl-1.0.2p.tar.gz
+# URL https://www.openssl.org/source/openssl-1.1.1.tar.gz
   CONFIGURE_COMMAND ./config no-shared no-idea no-mdc2 no-rc5 --prefix=${CMAKE_BINARY_DIR}
   BUILD_COMMAND make depend COMMAND make
   INSTALL_COMMAND make install_sw
@@ -85,10 +86,16 @@ EXTERNALPROJECT_ADD(
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
+  speexdsp
+  URL http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-sse
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
   speex
-  DEPENDS ogg
+  DEPENDS speexdsp ogg
   URL http://downloads.xiph.org/releases/speex/speex-1.2.0.tar.gz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-sse  --disable-oggtest --with-ogg=${CMAKE_BINARY_DIR}
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-sse
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -127,7 +134,7 @@ EXTERNALPROJECT_ADD(
   DEPENDS nasm
   GIT_REPOSITORY git://git.videolan.org/x264.git
   UPDATE_COMMAND ""
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static --enable-pic
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -179,7 +186,7 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   expat
   URL https://github.com/libexpat/libexpat/releases/download/R_2_2_6/expat-2.2.6.tar.bz2
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --without-docbook CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -191,8 +198,15 @@ EXTERNALPROJECT_ADD(
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
+  graphite
+  DEPENDS freetype
+  URL https://github.com/silnrsi/graphite/releases/download/1.3.12/graphite2-1.3.12.tgz
+  CONFIGURE_COMMAND PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF .
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
   ass
-  DEPENDS yasm freetype fribidi fontconfig
+  DEPENDS nasm freetype fribidi fontconfig graphite
   URL https://github.com/libass/libass/releases/download/0.14.0/libass-0.14.0.tar.gz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
@@ -207,11 +221,11 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   cairo
-# URL https://www.cairographics.org/releases/cairo-1.14.6.tar.xz
-  URL https://www.cairographics.org/snapshots/cairo-1.15.12.tar.xz
 # Stay with older version for now
 # URL https://www.cairographics.org/releases/cairo-1.12.18.tar.xz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static --enable-tee --enable-xml --enable-qt --enable-gl CFLAGS=-fPIC
+# URL https://www.cairographics.org/releases/cairo-1.14.6.tar.xz
+  URL https://www.cairographics.org/snapshots/cairo-1.15.12.tar.xz
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-fPIC
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -219,7 +233,6 @@ EXTERNALPROJECT_ADD(
   frei0r
   DEPENDS gavl cairo
   URL https://files.dyne.org/frei0r/releases/frei0r-plugins-1.6.1.tar.gz
-# PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/frei0r-configure.patch
   CONFIGURE_COMMAND touch README ChangeLog TODO AUTHORS COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -235,10 +248,9 @@ EXTERNALPROJECT_ADD(
 EXTERNALPROJECT_ADD(
   flac
   DEPENDS ogg
-  URL http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz
 # Stay with older version for now
 # URL http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz
-# PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/flac-configure.patch
+  URL http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
@@ -247,7 +259,7 @@ EXTERNALPROJECT_ADD(
   sndfile
   DEPENDS vorbis flac
   URL http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared --enable-static CFLAGS=-I${CMAKE_BINARY_DIR}/include
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -347,38 +359,11 @@ EXTERNALPROJECT_ADD(
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
-  nut
-  GIT_REPOSITORY git://git.ffmpeg.org/nut
-  UPDATE_COMMAND ""
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND cd src/trunk && PATH=$ENV{PATH} make
-  INSTALL_COMMAND cd src/trunk && PATH=$ENV{PATH} make prefix=${CMAKE_BINARY_DIR} install
-  BUILD_IN_SOURCE 1
-)
-EXTERNALPROJECT_ADD(
   openjpeg
   URL https://github.com/uclouvain/openjpeg/archive/v2.3.0.tar.gz
   CONFIGURE_COMMAND mkdir -p build COMMAND cd build && cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF ..
   BUILD_COMMAND cd build && make
-  INSTALL_COMMAND cd build && make install
-  BUILD_IN_SOURCE 1
-)
-EXTERNALPROJECT_ADD(
-  orc
-  URL https://gstreamer.freedesktop.org/src/orc/orc-0.4.28.tar.xz
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
-  BUILD_COMMAND PATH=$ENV{PATH} make
-  BUILD_IN_SOURCE 1
-)
-EXTERNALPROJECT_ADD(
-  schroedinger
-  DEPENDS orc
-# URL http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz
-# Schroedinger is currently not available...
-  URL http://helium.ijs.si/schroedinger-1.0.11.tar.gz
-  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/schroedinger-configure.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
-  BUILD_COMMAND PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build && make install && cp bin/libopenjp2.a ${CMAKE_BINARY_DIR}/lib
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
@@ -399,6 +384,7 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   twolame
+  DEPENDS sndfile
   URL http://netcologne.dl.sourceforge.net/project/twolame/twolame/0.3.13/twolame-0.3.13.tar.gz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
   BUILD_COMMAND PATH=$ENV{PATH} make
@@ -468,10 +454,10 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   ffmpeg
-  DEPENDS bluray bzip2 caca cairo cdio expat fdkaac flite fribidi gavl gsm ilbc modplug mp3lame nut ogg opencore-amr openjpeg openssl opus orc raw1394 shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xz yasm z zmq zvbi vpx x264 x265 xavs xvidcore flac speex vorbis theora freetype cdio-paranoia avc1394 dc1394 schroedinger rtmp fontconfig ass frei0r sndfile bs2b iec61883
+  DEPENDS bluray bzip2 caca cairo cdio expat fdkaac flite fribidi gavl gsm ilbc modplug mp3lame ogg opencore-amr openjpeg openssl opus raw1394 shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xz yasm z zmq zvbi vpx x264 x265 xavs xvidcore flac speex vorbis theora freetype cdio-paranoia avc1394 dc1394 rtmp fontconfig ass frei0r sndfile bs2b iec61883
   URL http://www.ffmpeg.org/releases/ffmpeg-4.0.2.tar.bz2
-  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/ffmpeg-ism-offset.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/usr/share/ffmpeg --disable-shared --enable-static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --disable-ffserver --enable-runtime-cpudetect --enable-memalign-hack --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -ldl\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lorc-0.4\ -lv4lconvert\ -ljpeg\ -lncurses\ -ltinfo\ -lgpm\ -lbluray\ -lgomp\ -lrt\ -llzma\ -lz\ -lm --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfdk-aac --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libnut --enable-libopenjpeg --enable-libschroedinger --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi
+# PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/ffmpeg-ism-offset.patch
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/usr/share/ffmpeg --disable-shared --enable-static --pkg-config-flags=--static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --enable-runtime-cpudetect --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lv4lconvert\ -ljpeg\ -lwebp\ -lwebpmux\ -lfreetype\ -lharfbuzz\ -lgraphite2\ -lncurses\ -ltinfo\ -lgpm\ -lbluray\ -lslang\ -licui18n\ -licuuc\ -luuid\ -lgomp\ -lrt\ -llzma\ -lpthread\ -lz\ -lm\ -ldl --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfdk-aac --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libopenjpeg --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi
   BUILD_COMMAND PATH=$ENV{PATH} make
   INSTALL_COMMAND PATH=$ENV{PATH} make install COMMAND PATH=$ENV{PATH} make install-data DATADIR=/usr/share/ffmpeg
   BUILD_IN_SOURCE 1
@@ -481,7 +467,7 @@ EXTERNALPROJECT_ADD(
   DEPENDS ffmpeg
   URL ${CMAKE_SOURCE_DIR}/vendor/frmxtract-3.0.2.tar.gz
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/frmxtract-configure.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} CFLAGS=-Wall\ -O2\ -I${CMAKE_BINARY_DIR}/include LDFLAGS=-static\ -L${CMAKE_BINARY_DIR}/lib\ -lavformat\ -lavcodec\ -lavutil\ -lswresample\ -lswscale\ -lvorbis\ -logg\ -lvorbisenc\ -ltheora\ -lvpx\ -lrtmp\ -lzvbi\ -lfdk-aac\ -lsndfile\ -lmp3lame\ -lmodplug\ -lsoxr\ -ltwolame\ -lwavpack\ -lxvidcore\ -lx264\ -lx265\ -lxavs\ -lwebp\ -lbluray\ -lopencore-amrwb\ -lopencore-amrnb\ -lvo-amrwbenc\ -lfontconfig\ -lfreetype\ -lschroedinger-1.0\ -lshine\ -lspeex\ -lopus\ -lnut\ -lorc-0.4\ -lstdc++\ -lexpat\ -lilbc\ -lssl\ -lcrypto\ -lxml2\ -lopenjp2\ -lpng\ -lbz2\ -llzma\ -lgomp\ -lpthread\ -lrt\ -lz\ -lm\ -ldl\ -s
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} CFLAGS=-Wall\ -O2\ -I${CMAKE_BINARY_DIR}/include LDFLAGS=-static\ -L${CMAKE_BINARY_DIR}/lib\ -lavformat\ -lavcodec\ -lavutil\ -lswresample\ -lswscale\ -lvorbis\ -logg\ -lvorbisenc\ -ltheora\ -lvpx\ -lrtmp\ -lzvbi\ -lfdk-aac\ -lsndfile\ -lmp3lame\ -lmodplug\ -lsoxr\ -ltwolame\ -lwavpack\ -lxvidcore\ -lx264\ -lx265\ -lxavs\ -lwebpmux\ -lwebpdecoder\ -lwebp\ -lbluray\ -lopencore-amrwb\ -lopencore-amrnb\ -lvo-amrwbenc\ -lfontconfig\ -lfreetype\ -lharfbuzz\ -lgraphite2\ -lshine\ -lspeex\ -lopus\ -lstdc++\ -lexpat\ -lilbc\ -lssl\ -lcrypto\ -lxml2\ -lopenjp2\ -lpng\ -lbz2\ -llzma\ -lslang\ -licui18n\ -licuuc\ -licudata\ -luuid\ -lgomp\ -lpthread\ -lrt\ -lz\ -lm\ -ldl\ -s
   BUILD_COMMAND PATH=$ENV{PATH} LDFLAGS=$ENV{} make
   BUILD_IN_SOURCE 1
 )

@@ -77,7 +77,7 @@ arch() {
 #
 # Main
 #
-ver=3.2.2
+ver=4.0.2
 rev=1
 arc=`arch`
 pkg=ffmpeg_$ver-${rev}_$arc
@@ -92,7 +92,7 @@ mkdir -p usr/local
 [ $? -ne 0 ] && exit 1
 cd usr/local
 [ $? -ne 0 ] && exit 1
-mkdir -p bin lib/frei0r-1 share/man/man1 share/ffmpeg/examples share/doc/ffmpeg-$ver
+mkdir -p bin lib/frei0r-1 share/man/man1 share/man/man3 share/ffmpeg/examples share/doc/ffmpeg-$ver
 [ $? -ne 0 ] && exit 1
 #
 BUILD=`realpath $HD/../build`
@@ -107,9 +107,11 @@ cp -p $BUILD/bin/frmxtract bin/
 cp -p $BUILD/lib/frei0r-1/*.so lib/frei0r-1/
 [ $? -ne 0 ] && exit 1
 #
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffmpeg.1* share/man/man1/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffmpeg*.1 share/man/man1/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffprobe.1* share/man/man1/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffprobe*.1 share/man/man1/
+[ $? -ne 0 ] && exit 1
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/lib*.3 share/man/man3/
 [ $? -ne 0 ] && exit 1
 #
 cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffprobe.xsd share/ffmpeg/

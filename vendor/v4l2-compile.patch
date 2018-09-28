@@ -1,11 +1,11 @@
---- v4l-utils/configure.org	2014-10-01 10:18:02.000000000 +0200
-+++ v4l-utils/configure	2014-10-03 00:23:37.197009409 +0200
-@@ -21356,7 +21356,7 @@
+--- v4l-utils/configure.org	2018-02-10 13:26:12.000000000 +0100
++++ v4l-utils/configure	2018-09-27 12:59:35.794505822 +0200
+@@ -21442,7 +21442,7 @@
  
  
  
 -$as_echo "#define HAVE_QTGL 1" >>confdefs.h
 +$as_echo "#undef HAVE_QTGL" >>confdefs.h
  
+       QT_VERSION="v5 with QtGL"
     else
-       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Qt5 OpenGL is not available" >&5
