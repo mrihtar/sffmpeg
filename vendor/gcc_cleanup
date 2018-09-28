@@ -1,0 +1,10 @@
+#!/bin/bash
+TMPFILE=`mktemp /tmp/${0##*/}.XXXXX`
+trap 'rm -f $TMPFILE' 0
+#
+sed -e 's/-lgcc_s//g' "$1" > $TMPFILE
+[ $? -ne 0 ] && exit 1
+sed -e 's/-lgcc//g' $TMPFILE > "$1"
+[ $? -ne 0 ] && exit 1
+#
+exit 0

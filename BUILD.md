@@ -1,8 +1,8 @@
 **Tested on:**
 <table>
-<tr><td><b>CentOS 7.5-1804</b>   </td><td>x86_64</td></tr>
+<!-- tr><td><b>CentOS 7.5-1804</b>   </td><td>x86_64</td></tr -->
 <tr><td><b>Ubuntu 18.04.1 LTS</b></td><td>amd64</td></tr>
-<tr><td><b>Debian 9.5</b>        </td><td>amd64</td></tr>
+<!-- tr><td><b>Debian 9.5</b>        </td><td>amd64</td></tr -->
 </table>
 
 **Build as root with:**

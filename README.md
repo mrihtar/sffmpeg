@@ -4,12 +4,12 @@ libraries included.
 
 Static <b>ffmpeg v4.0.2</b> build from this repository currently compiles on:
 <table>
-<tr><td><b><!-- CentOS 7.5-1804 --></b>   </td><td><!-- x86_64 --></td>
+<!-- tr><td><b>CentOS 7.5-1804</b>   </td><td>x86_64</td -->
+<tr><td><b>Ubuntu 18.04.1 LTS</b></td><td>amd64</td>
 <td rowspan="3">
 <img src="http://www.movieconverter-studio.com/_PUBLIC/ffmpeg/logo-new/ffmpeg-logo-src/ffmpeg-logo.png" height="90">
 </td></tr>
-<tr><td><b>Ubuntu 18.04.1 LTS</b></td><td>amd64</td></tr>
-<tr><td><b><!-- Debian 9.5 --></b>        </td><td><!-- amd64 --></td></tr>
+<!-- tr><td><b>Debian 9.5</b>        </td><td>amd64</td></tr -->
 </table>
 
 For build see [BUILD.md].
