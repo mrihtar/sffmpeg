@@ -1,0 +1,11 @@
+--- ffmpeg/libavformat/avformat.h.org	2018-07-18 15:52:02.000000000 +0200
++++ ffmpeg/libavformat/avformat.h	2018-09-29 18:20:16.844176865 +0200
+@@ -1405,7 +1405,7 @@
+      * @deprecated Use url instead.
+      */
+     attribute_deprecated
+-    char filename[1024];
++    char filename[2048];
+ #endif
+ 
+     /**

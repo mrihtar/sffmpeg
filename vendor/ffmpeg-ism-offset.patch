@@ -1,16 +1,16 @@
---- ffmpeg/libavformat/movenc.h.org	2015-06-19 22:44:51.000000000 +0200
-+++ ffmpeg/libavformat/movenc.h	2015-07-01 20:16:26.516171214 +0200
-@@ -190,6 +190,7 @@
+--- ffmpeg/libavformat/movenc.h.org	2018-07-18 15:52:02.000000000 +0200
++++ ffmpeg/libavformat/movenc.h	2018-09-29 18:12:09.440160950 +0200
+@@ -194,6 +194,7 @@
      int max_fragment_size;
      int ism_lookahead;
      AVIOContext *mdat_buf;
 +    int64_t ism_offset;
      int first_trun;
-
+ 
      int video_track_timescale;
---- ffmpeg/libavformat/movenc.c.org	2015-07-01 20:16:36.196366739 +0200
-+++ ffmpeg/libavformat/movenc.c	2015-07-01 20:18:29.159167783 +0200
-@@ -80,6 +80,7 @@
+--- ffmpeg/libavformat/movenc.c.org	2018-07-18 15:52:07.000000000 +0200
++++ ffmpeg/libavformat/movenc.c	2018-09-29 18:15:47.142968073 +0200
+@@ -87,6 +87,7 @@
      { "min_frag_duration", "Minimum fragment duration", offsetof(MOVMuxContext, min_fragment_duration), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
      { "frag_size", "Maximum fragment size", offsetof(MOVMuxContext, max_fragment_size), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
      { "ism_lookahead", "Number of lookahead entries for ISM files", offsetof(MOVMuxContext, ism_lookahead), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
@@ -18,10 +18,10 @@
      { "video_track_timescale", "set timescale of all video tracks", offsetof(MOVMuxContext, video_track_timescale), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
      { "brand",    "Override major brand", offsetof(MOVMuxContext, major_brand),   AV_OPT_TYPE_STRING, {.str = NULL}, .flags = AV_OPT_FLAG_ENCODING_PARAM },
      { "use_editlist", "use edit list", offsetof(MOVMuxContext, use_editlist), AV_OPT_TYPE_BOOL, {.i64 = -1}, -1, 1, AV_OPT_FLAG_ENCODING_PARAM},
-@@ -5650,6 +5650,7 @@
-         track->start_dts  = AV_NOPTS_VALUE;
+@@ -6119,6 +6120,7 @@
          track->start_cts  = AV_NOPTS_VALUE;
          track->end_pts    = AV_NOPTS_VALUE;
+         track->dts_shift  = AV_NOPTS_VALUE;
 +        track->frag_start += mov->ism_offset;
          if (st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
              if (track->tag == MKTAG('m','x','3','p') || track->tag == MKTAG('m','x','3','n') ||
