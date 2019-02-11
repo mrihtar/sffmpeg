@@ -2,7 +2,7 @@
 HD=`cd "${0%/*}" 2> /dev/null; echo $PWD`
 #
 # CMake version to build
-ver=3.12.2
+ver=3.13.4
 #
 if [ ! -s cmake-$ver.tar.gz ]; then
   wget http://www.cmake.org/files/v${ver%.*}/cmake-$ver.tar.gz

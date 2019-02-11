@@ -74,6 +74,8 @@ arch() {
 #
 case `os` in
   Ubuntu )
+    apt-get -y install meson
+    [ $? -ne 0 ] && exit 1
     apt-get -y source libudev1
     [ $? -ne 0 ] && exit 1
     apt-get -y build-dep libudev1

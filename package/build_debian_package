@@ -77,7 +77,7 @@ arch() {
 #
 # Main
 #
-ver=4.0.2
+ver=4.1
 rev=1
 arc=`arch`
 pkg=ffmpeg_$ver-${rev}_$arc
