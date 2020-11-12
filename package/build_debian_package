@@ -77,12 +77,15 @@ arch() {
 #
 # Main
 #
-ver=4.1
+name=ffmpeg
+mver=4.1
+ver=$mver
 rev=1
 arc=`arch`
-pkg=ffmpeg_$ver-${rev}_$arc
+pkg=${name}_$ver-${rev}_$arc
 #
-if [ ! -d $pkg ]; then
+rm -fr $pkg
+[ $? -ne 0 ] && exit 1
 mkdir -p $pkg
 [ $? -ne 0 ] && exit 1
 cd $pkg
@@ -91,7 +94,7 @@ mkdir -p usr/local
 [ $? -ne 0 ] && exit 1
 cd usr/local
 [ $? -ne 0 ] && exit 1
-mkdir -p bin lib/frei0r-1 share/man/man1 share/man/man3 share/ffmpeg/examples share/doc/ffmpeg-$ver
+mkdir -p bin lib/frei0r-1 share/man/man1 share/man/man3 share/$name/examples share/doc/$name-$mver
 [ $? -ne 0 ] && exit 1
 #
 BUILD=`realpath $HD/../build`
@@ -113,34 +116,33 @@ cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffprobe*.1 share/man/man1/
 cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/lib*.3 share/man/man3/
 [ $? -ne 0 ] && exit 1
 #
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffprobe.xsd share/ffmpeg/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/ffprobe.xsd share/$name/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/presets/*.ffpreset share/ffmpeg/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/presets/*.ffpreset share/$name/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c share/ffmpeg/examples/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c share/$name/examples/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile share/ffmpeg/examples/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile share/$name/examples/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/examples/README share/ffmpeg/examples/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/doc/examples/README share/$name/examples/
 [ $? -ne 0 ] && exit 1
 #
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/Changelog share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/Changelog share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/COPYING* share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/COPYING* share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/CREDITS share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/CREDITS share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/INSTALL* share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/INSTALL* share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/LICENSE* share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/LICENSE* share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/MAINTAINERS share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/MAINTAINERS share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/README* share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/README* share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES share/doc/ffmpeg-$ver/
+cp -p $BUILD/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES share/doc/$name-$ver/
 [ $? -ne 0 ] && exit 1
-fi
 #
 cd $HD/$pkg
 [ $? -ne 0 ] && exit 1
@@ -151,8 +153,8 @@ mkdir -p DEBIAN
 cd DEBIAN
 [ $? -ne 0 ] && exit 1
 cat > control << EOF
-Package: ffmpeg
-Version: $ver-$rev
+Package: $name
+Version: 7:$ver-0ubuntu0.18.04.2
 Section: video
 Priority: optional
 Architecture: $arc

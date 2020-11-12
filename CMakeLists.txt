@@ -26,7 +26,8 @@ EXTERNALPROJECT_ADD(
 )
 EXTERNALPROJECT_ADD(
   nasm
-  URL https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.gz
+# URL https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.gz
+  URL https://fossies.org/linux/misc/nasm-2.14.02.tar.xz
   CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR}
   BUILD_IN_SOURCE 1
 )
