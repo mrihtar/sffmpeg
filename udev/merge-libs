@@ -4,13 +4,13 @@ trap 'rm -f $TMPFILE' 0
 #
 set -x
 rm -f libudev.a
-cp "$1/build-deb/src/basic/libbasic.a" .
+cp "$1/build/src/basic/libbasic.a" .
 [ $? -ne 0 ] && exit 1
-cp "$1/build-deb/src/udev/libudev-basic.a" .
+cp "$1/build/src/udev/libudev-basic.a" .
 [ $? -ne 0 ] && exit 1
-cp "$1/build-deb/src/udev/libudev-core.a" .
+cp "$1/build/src/udev/libudev-core.a" .
 [ $? -ne 0 ] && exit 1
-cp "$1/build-deb/src/libsystemd/libsystemd.a" .
+cp "$1/build/src/libsystemd/libsystemd.a" .
 [ $? -ne 0 ] && exit 1
 #
 cat > $TMPFILE << EOF

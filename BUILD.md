@@ -14,11 +14,11 @@ libraries, applies patches, builds binaries and creates final packages.
 
 **Result:**
 <pre>
-package/ffmpeg-4.0.2-1-amd64.tar.bz2
+package/ffmpeg-4.3.1-1-amd64.tar.bz2
 </pre>
 and additionally on Ubuntu/Debian:
 <pre>
-package/ffmpeg_4.0.2-1_amd64.deb
+package/ffmpeg_4.3.1-1_amd64.deb
 </pre>
 
 **Built files:**
@@ -39,12 +39,12 @@ build/ffmpeg-prefix/src/ffmpeg/doc/examples/*.c      --> /usr/share/ffmpeg/examp
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/Makefile --> /usr/share/ffmpeg/examples/
 build/ffmpeg-prefix/src/ffmpeg/doc/examples/README   --> /usr/share/ffmpeg/examples/
 
-build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-4.0.2/
-build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-4.0.2/
+build/ffmpeg-prefix/src/ffmpeg/Changelog             --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/COPYING*              --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/CREDITS               --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/INSTALL*              --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/LICENSE*              --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/MAINTAINERS           --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/README*               --> /usr/share/doc/ffmpeg-4.3.1/
+build/ffmpeg-prefix/src/ffmpeg/RELEASE_NOTES         --> /usr/share/doc/ffmpeg-4.3.1/
 </pre>
