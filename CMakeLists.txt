@@ -17,6 +17,7 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/man/man3)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/ssl)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/var)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
+SET(GIT_SHALOW ON)
 
 EXTERNALPROJECT_ADD(
   yasm
@@ -253,10 +254,22 @@ EXTERNALPROJECT_ADD(
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
+  opencv
+# URL https://github.com/opencv/opencv/archive/2.4.13.6.tar.gz
+  URL https://github.com/opencv/opencv/archive/3.4.12.tar.gz
+# URL https://github.com/opencv/opencv/archive/4.5.0.tar.gz
+  CONFIGURE_COMMAND mkdir -p build COMMAND cd build && PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_opencv_world:BOOL=OFF -DBUILD_opencv_java:BOOL=OFF -DBUILD_opencv_java_bindings_generator:BOOL=OFF -DBUILD_opencv_python2:BOOL=OFF -DBUILD_opencv_python3:BOOL=OFF -DBUILD_opencv_python_bindings_generator:BOOL=OFF -DBUILD_ITT:BOOL=OFF -DOPENCV_ENABLE_NONFREE:BOOL=ON ..
+  BUILD_COMMAND cd build && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build && PATH=$ENV{PATH} make install && cp -p ${CMAKE_BINARY_DIR}/share/OpenCV/3rdparty/lib/libippiw.a ${CMAKE_BINARY_DIR}/lib/ && cp -p ${CMAKE_BINARY_DIR}/share/OpenCV/3rdparty/lib/libippicv.a ${CMAKE_BINARY_DIR}/lib/
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
   frei0r
-  DEPENDS gavl cairo
-  URL https://files.dyne.org/frei0r/releases/frei0r-plugins-1.7.0.tar.gz
-  CONFIGURE_COMMAND touch README.md ChangeLog TODO AUTHORS COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
+  DEPENDS gavl cairo opencv
+# URL https://files.dyne.org/frei0r/releases/frei0r-plugins-1.7.0.tar.gz
+  GIT_REPOSITORY https://github.com/dyne/frei0r.git
+  UPDATE_COMMAND ""
+  CONFIGURE_COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-static
   BUILD_COMMAND PATH=$ENV{PATH} make
   BUILD_IN_SOURCE 1
 )
@@ -483,11 +496,107 @@ EXTERNALPROJECT_ADD(
   BUILD_IN_SOURCE 1
 )
 EXTERNALPROJECT_ADD(
+  aom
+  GIT_REPOSITORY https://aomedia.googlesource.com/aom
+  GIT_TAG v2.0.1
+  UPDATE_COMMAND ""
+  CONFIGURE_COMMAND mkdir -p aom_build COMMAND cd aom_build && PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF ..
+  BUILD_COMMAND cd aom_build && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd aom_build && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  dav1d
+  GIT_REPOSITORY https://code.videolan.org/videolan/dav1d
+  UPDATE_COMMAND ""
+  CONFIGURE_COMMAND mkdir -p build COMMAND cd build && PATH=$ENV{PATH} meson --prefix ${CMAKE_BINARY_DIR} --libdir ${CMAKE_BINARY_DIR}/lib --default-library static ..
+  BUILD_COMMAND cd build && PATH=$ENV{PATH} ninja
+  INSTALL_COMMAND cd build && PATH=$ENV{PATH} ninja install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  davs2
+  URL https://github.com/pkuvcl/davs2/archive/1.6.tar.gz
+  CONFIGURE_COMMAND cd build/linux && PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-pic
+  BUILD_COMMAND cd build/linux && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build/linux && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  xavs2
+  URL https://github.com/pkuvcl/xavs2/archive/1.3.tar.gz
+  CONFIGURE_COMMAND cd build/linux && PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --enable-pic
+  BUILD_COMMAND cd build/linux && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build/linux && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  codec2
+  URL https://codeload.github.com/drowe67/codec2/tar.gz/v0.9.2
+  PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/codec2-lsp.patch
+  CONFIGURE_COMMAND mkdir -p build COMMAND cd build && PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF ..
+  BUILD_COMMAND cd build && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  zimg
+  URL https://github.com/sekrit-twc/zimg/archive/release-3.0.1.tar.gz
+  CONFIGURE_COMMAND ./autogen.sh COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  avisynth
+  URL https://github.com/AviSynth/AviSynthPlus/archive/v3.6.1.tar.gz
+  CONFIGURE_COMMAND mkdir -p build COMMAND cd build && PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF -DHEADERS_ONLY:BOOL=ON ..
+  BUILD_COMMAND cd build && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  kvazaar
+  URL https://github.com/ultravideo/kvazaar/releases/download/v2.0.0/kvazaar-2.0.0.tar.xz
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  vmaf
+  URL https://github.com/Netflix/vmaf/archive/v1.5.3.tar.gz
+  CONFIGURE_COMMAND mkdir -p libvmaf/build COMMAND cd libvmaf/build && PATH=$ENV{PATH} meson --prefix ${CMAKE_BINARY_DIR} --libdir ${CMAKE_BINARY_DIR}/lib --default-library static ..
+  BUILD_COMMAND cd libvmaf/build && PATH=$ENV{PATH} ninja
+  INSTALL_COMMAND cd libvmaf/build && PATH=$ENV{PATH} ninja install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  cunit
+  URL https://netcologne.dl.sourceforge.net/project/cunit/CUnit/2.1-3/CUnit-2.1-3.tar.bz2
+  CONFIGURE_COMMAND mv configure.in configure.ac COMMAND autoreconf -i COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --disable-shared
+  BUILD_COMMAND PATH=$ENV{PATH} make
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  sofa
+  DEPENDS cunit
+  URL https://github.com/hoene/libmysofa/archive/v1.1.tar.gz
+  CONFIGURE_COMMAND mkdir -p build COMMAND cd build && PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DCODE_COVERAGE:BOOL=OFF ..
+  BUILD_COMMAND cd build && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
+  lensfun
+  URL https://github.com/lensfun/lensfun/archive/v0.3.95.tar.gz
+  CONFIGURE_COMMAND mkdir -p build COMMAND cd build && PATH=$ENV{PATH} cmake -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR} -DBUILD_STATIC:BOOL=ON ..
+  BUILD_COMMAND cd build && PATH=$ENV{PATH} make
+  INSTALL_COMMAND cd build && PATH=$ENV{PATH} make install
+  BUILD_IN_SOURCE 1
+)
+EXTERNALPROJECT_ADD(
   ffmpeg
-  DEPENDS bluray bzip2 caca cairo cdio expat fdkaac flite fribidi gavl gsm ilbc modplug mp3lame ogg opencore-amr openjpeg openssl opus raw1394 shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xz yasm z zmq zvbi vpx x264 x265 xavs xvidcore flac speex vorbis theora freetype cdio-paranoia avc1394 dc1394 rtmp fontconfig ass frei0r sndfile bs2b iec61883
+  DEPENDS bluray bzip2 caca cairo cdio expat fdkaac flite fribidi gavl gsm ilbc modplug mp3lame ogg opencore-amr openjpeg openssl opus raw1394 shine soxr twolame v4l2 vidstab vo-amrwbenc wavpack webp xz yasm z zmq zvbi vpx x264 x265 xavs xvidcore flac speex vorbis theora freetype cdio-paranoia avc1394 dc1394 rtmp fontconfig ass frei0r sndfile bs2b iec61883 aom dav1d davs2 xavs2 codec2 zimg avisynth kvazaar vmaf sofa lensfun opencv
   URL https://www.ffmpeg.org/releases/ffmpeg-4.3.1.tar.bz2
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/ffmpeg-ism-offset.patch && patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/ffmpeg-filename-size.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/usr/share/ffmpeg --disable-shared --enable-static --pkg-config-flags=--static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --enable-runtime-cpudetect --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lv4lconvert\ -ludev\ -ljpeg\ -lwebp\ -lwebpmux\ -lfreetype\ -lharfbuzz\ -lgraphite2\ -lncurses\ -lxcb\ -lXau\ -lXdmcp\ -ltinfo\ -lgpm\ -lbluray\ -lzmq\ -lslang\ -licui18n\ -licuuc\ -luuid\ -lgomp\ -lrt\ -llzma\ -lpthread\ -lz\ -lm\ -ldl --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfdk-aac --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libopenjpeg --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} --datadir=/usr/share/ffmpeg --disable-shared --enable-static --pkg-config-flags=--static --enable-gpl --enable-version3 --enable-nonfree --disable-debug --disable-ffplay --enable-runtime-cpudetect --extra-cflags=-I${CMAKE_BINARY_DIR}/include\ --static --extra-ldflags=-L${CMAKE_BINARY_DIR}/lib\ -static --extra-libs=-lstdc++\ -lexpat\ -lpng\ -lxml2\ -lusb-1.0\ -lraw1394\ -lv4lconvert\ -ludev\ -ljpeg\ -lwebp\ -lwebpmux\ -lfreetype\ -lharfbuzz\ -lgraphite2\ -lncurses\ -lxcb\ -lXau\ -lXdmcp\ -ltinfo\ -lgpm\ -lbluray\ -lopencv_core\ -lzmq\ -lslang\ -licui18n\ -licuuc\ -lippiw\ -lippicv\ -luuid\ -lgomp\ -lrt\ -llzma\ -lpthread\ -lz\ -lm\ -ldl --enable-libxml2 --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libfdk-aac --enable-libmp3lame --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-libvpx --enable-libopus --enable-librtmp --enable-libfreetype --enable-libass --enable-fontconfig --enable-frei0r --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libdc1394 --enable-libflite --enable-libgsm --enable-libiec61883 --enable-libilbc --enable-libmodplug --enable-libopenjpeg --enable-libshine --enable-libsoxr --enable-libtwolame --enable-libv4l2 --enable-libvidstab --enable-libvo-amrwbenc --enable-libwavpack --enable-libwebp --enable-libxavs --enable-libzmq --enable-libzvbi --enable-libaom --enable-libdav1d --enable-libdavs2 --enable-libxavs2 --enable-libcodec2 --enable-libzimg --enable-avisynth --enable-libkvazaar --enable-libvmaf --enable-libmysofa --enable-liblensfun --enable-openssl --enable-libopencv
   BUILD_COMMAND PATH=$ENV{PATH} make
   INSTALL_COMMAND PATH=$ENV{PATH} make install COMMAND PATH=$ENV{PATH} make install-data DATADIR=/usr/share/ffmpeg
   BUILD_IN_SOURCE 1
@@ -497,7 +606,7 @@ EXTERNALPROJECT_ADD(
   DEPENDS ffmpeg
   URL ${CMAKE_SOURCE_DIR}/vendor/frmxtract-4.2.2.tar.gz
   PATCH_COMMAND patch -N -p1 < ${CMAKE_SOURCE_DIR}/vendor/frmxtract-configure.patch
-  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} CFLAGS=-Wall\ -O2\ -I${CMAKE_BINARY_DIR}/include LDFLAGS=-static\ -L${CMAKE_BINARY_DIR}/lib\ -lavformat\ -lavcodec\ -lavutil\ -lswresample\ -lswscale\ -lvorbis\ -logg\ -lvorbisenc\ -ltheora\ -lvpx\ -lrtmp\ -lzvbi\ -lfdk-aac\ -lsndfile\ -lmp3lame\ -lmodplug\ -lsoxr\ -ltwolame\ -lwavpack\ -lxvidcore\ -lx264\ -lx265\ -lxavs\ -lwebpmux\ -lwebpdecoder\ -lwebp\ -lbluray\ -lopencore-amrwb\ -lopencore-amrnb\ -lvo-amrwbenc\ -lfontconfig\ -lfreetype\ -lharfbuzz\ -lgraphite2\ -lshine\ -lspeex\ -lopus\ -lnuma\ -lbrotlidec\ -lbrotlicommon\ -lzmq\ -lgcc_eh\ -lunwind\ -lstdc++\ -lexpat\ -lilbc\ -lssl\ -lcrypto\ -lxml2\ -lopenjp2\ -lpng\ -lbz2\ -llzma\ -lslang\ -licui18n\ -licuuc\ -licudata\ -luuid\ -lgomp\ -lpthread\ -lrt\ -lz\ -lm\ -ldl\ -s
+  CONFIGURE_COMMAND PATH=$ENV{PATH} PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH} ./configure --prefix=${CMAKE_BINARY_DIR} CFLAGS=-Wall\ -O2\ -I${CMAKE_BINARY_DIR}/include LDFLAGS=-static\ -L${CMAKE_BINARY_DIR}/lib\ -lavformat\ -lavcodec\ -lavutil\ -lswresample\ -lswscale\ -lvorbis\ -logg\ -lvorbisenc\ -ltheora\ -lvpx\ -lrtmp\ -lzvbi\ -lfdk-aac\ -lsndfile\ -lmp3lame\ -lmodplug\ -lsoxr\ -ltwolame\ -lwavpack\ -lxvidcore\ -lx264\ -lx265\ -lxavs\ -lwebpmux\ -lwebpdecoder\ -lwebp\ -lbluray\ -lopencv_core\ -lopencore-amrwb\ -lopencore-amrnb\ -lvo-amrwbenc\ -lfontconfig\ -lfreetype\ -lharfbuzz\ -lgraphite2\ -lshine\ -lspeex\ -lopus\ -lnuma\ -lbrotlidec\ -lbrotlicommon\ -laom\ -ldavs2\ -lxavs2\ -ldav1d\ -lcodec2\ -lkvazaar\ -lzmq\ -lgcc_eh\ -lunwind\ -lstdc++\ -lexpat\ -lilbc\ -lssl\ -lcrypto\ -lxml2\ -lopenjp2\ -lpng\ -lbz2\ -llzma\ -lslang\ -licui18n\ -licuuc\ -licudata\ -luuid\ -lgomp\ -lpthread\ -lrt\ -lz\ -lm\ -ldl\ -s
   BUILD_COMMAND PATH=$ENV{PATH} LDFLAGS=$ENV{} make
   BUILD_IN_SOURCE 1
 )
